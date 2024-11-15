@@ -1,39 +1,35 @@
-﻿using System;
+﻿using JeuDeDames.LogiqueDeJeu;
+using System;
+using System.Collections.Generic;
 
 namespace JeuDeDames.LogiqueDeJeu
 {
     public class Jeu
     {
-        private Plateau plateau;
+        public Plateau Plateau { get; private set; }
+        public bool PartieTerminee { get; private set; }
+        public bool Joueur1Tour { get; private set; }
 
-        public Jeu(int taillePlateau)
+        public Jeu()
         {
-            // Initialisation du plateau avec la taille spécifiée (8x8 ou 10x10)
-            plateau = new Plateau(taillePlateau);
+            Plateau = new Plateau();
+            Joueur1Tour = true; // Le joueur 1 commence
+            PartieTerminee = false;
         }
 
-        public bool DeplacerPiece(int departX, int departY, int arriveeX, int arriveeY)
+        public bool DeplacerPiece(int xDepart, int yDepart, int xArrivee, int yArrivee)
         {
-            // Vérifie si le déplacement est possible et effectue le déplacement
-            return plateau.DeplacerPiece(departX, departY, arriveeX, arriveeY);
-        }
-
-        public void AfficherPlateau()
-        {
-            for (int i = 0; i < plateau.Taille; i++)
+            if (Plateau.DeplacerPiece(xDepart, yDepart, xArrivee, yArrivee, Joueur1Tour))
             {
-                for (int j = 0; j < plateau.Taille; j++)
-                {
-                    var pion = plateau.Cases[i, j];
-                    if (pion == CouleurPion.Vide)
-                        Console.Write("[ ]");
-                    else if (pion == CouleurPion.Blanc)
-                        Console.Write("[B]");
-                    else if (pion == CouleurPion.Gris)
-                        Console.Write("[G]");
-                }
-                Console.WriteLine();
+                Joueur1Tour = !Joueur1Tour; // Changer de joueur
+                return true;
             }
+            return false;
+        }
+
+        public void TerminerPartie()
+        {
+            PartieTerminee = true;
         }
     }
 }
