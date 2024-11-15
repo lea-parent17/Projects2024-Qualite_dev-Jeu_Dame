@@ -1,50 +1,68 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace JeuDeDames.LogiqueDeJeu
 {
     public class Plateau
     {
-        public Piece[,] Cases { get; private set; }
+        public CouleurPion[,] Cases { get; private set; }
 
-        public Plateau()
+        public Plateau(int taille)
         {
-            Cases = new Piece[8, 8];
-            InitialiserPlateau();
-        }
+            Cases = new CouleurPion[taille, taille];
 
-        private void InitialiserPlateau()
-        {
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < taille; i++)
             {
-                for (int j = 0; j < 8; j++)
+                for (int j = 0; j < taille; j++)
                 {
-                    if ((i + j) % 2 != 0)
+                    if ((i + j) % 2 != 0) // Cases noires
                     {
                         if (i < 3)
-                        {
-                            Cases[i, j] = new Piece(true); // Pièces noires
-                        }
-                        else if (i > 4)
-                        {
-                            Cases[i, j] = new Piece(false); // Pièces blanches
-                        }
+                            Cases[i, j] = CouleurPion.Gris; // Pions gris
+                        else if (i >= taille - 3)
+                            Cases[i, j] = CouleurPion.Blanc; // Pions blancs
+                        else
+                            Cases[i, j] = CouleurPion.Vide; // Cases vides
+                    }
+                    else
+                    {
+                        Cases[i, j] = CouleurPion.Vide; // Cases blanches
                     }
                 }
             }
         }
 
-        public bool DeplacerPiece(int xDepart, int yDepart, int xArrivee, int yArrivee, bool estNoir)
+        public List<(int, int)> ObtenirDeplacementsPossibles(int x, int y)
         {
-            if (Cases[xDepart, yDepart] != null && Cases[xDepart, yDepart].EstNoir == estNoir)
+            var mouvements = new List<(int, int)>();
+
+            if (Cases[x, y] == CouleurPion.Blanc || Cases[x, y] == CouleurPion.Gris)
             {
-                // Exemple de validation simple pour un déplacement
-                if (Math.Abs(xArrivee - xDepart) == 1 && Math.Abs(yArrivee - yDepart) == 1)
+                int direction = (Cases[x, y] == CouleurPion.Blanc) ? -1 : 1;
+
+                // Vérifier les diagonales
+                for (int dx = -1; dx <= 1; dx += 2)
                 {
-                    // Déplacement simple
-                    Cases[xArrivee, yArrivee] = Cases[xDepart, yDepart];
-                    Cases[xDepart, yDepart] = null;
-                    return true;
+                    int nx = x + direction;
+                    int ny = y + dx;
+
+                    if (nx >= 0 && nx < Cases.GetLength(0) && ny >= 0 && ny < Cases.GetLength(1) && Cases[nx, ny] == CouleurPion.Vide)
+                    {
+                        mouvements.Add((nx, ny));
+                    }
                 }
+            }
+
+            return mouvements;
+        }
+
+        public bool DeplacerPiece(int xOrigine, int yOrigine, int xDestination, int yDestination)
+        {
+            if (Cases[xDestination, yDestination] == CouleurPion.Vide)
+            {
+                Cases[xDestination, yDestination] = Cases[xOrigine, yOrigine];
+                Cases[xOrigine, yOrigine] = CouleurPion.Vide;
+                return true;
             }
             return false;
         }

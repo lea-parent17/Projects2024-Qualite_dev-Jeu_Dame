@@ -1,35 +1,24 @@
-﻿using JeuDeDames.LogiqueDeJeu;
-using System;
-using System.Collections.Generic;
+﻿using System;
 
 namespace JeuDeDames.LogiqueDeJeu
 {
     public class Jeu
     {
-        public Plateau Plateau { get; private set; }
-        public bool PartieTerminee { get; private set; }
-        public bool Joueur1Tour { get; private set; }
+        private Plateau plateau;
 
-        public Jeu()
+        public Jeu(int taillePlateau)
         {
-            Plateau = new Plateau();
-            Joueur1Tour = true; // Le joueur 1 commence
-            PartieTerminee = false;
+            plateau = new Plateau(taillePlateau);
         }
 
-        public bool DeplacerPiece(int xDepart, int yDepart, int xArrivee, int yArrivee)
+        public bool DeplacerPiece(int departX, int departY, int arriveeX, int arriveeY)
         {
-            if (Plateau.DeplacerPiece(xDepart, yDepart, xArrivee, yArrivee, Joueur1Tour))
-            {
-                Joueur1Tour = !Joueur1Tour; // Changer de joueur
-                return true;
-            }
-            return false;
+            return plateau.DeplacerPiece(departX, departY, arriveeX, arriveeY);
         }
 
-        public void TerminerPartie()
+        public Plateau GetPlateau()
         {
-            PartieTerminee = true;
+            return plateau;
         }
     }
 }
