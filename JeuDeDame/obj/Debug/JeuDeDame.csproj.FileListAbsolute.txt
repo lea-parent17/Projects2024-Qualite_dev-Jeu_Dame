@@ -8,3 +8,4 @@ C:\Users\natha\OneDrive\Bureau\ALL\Cours_BUT3\Qualite_dev\ProjetJeuDeDame\JeuDeD
 C:\Users\natha\OneDrive\Bureau\ALL\Cours_BUT3\Qualite_dev\ProjetJeuDeDame\JeuDeDames\JeuDeDame\obj\Debug\JeuDeDame.exe
 C:\Users\natha\OneDrive\Bureau\ALL\Cours_BUT3\Qualite_dev\ProjetJeuDeDame\JeuDeDames\JeuDeDame\obj\Debug\JeuDeDame.pdb
 C:\Users\natha\OneDrive\Bureau\ALL\Cours_BUT3\Qualite_dev\ProjetJeuDeDame\JeuDeDames\JeuDeDame\obj\Debug\JeuDeDames.Form1.resources
+C:\Users\natha\OneDrive\Bureau\ALL\Cours_BUT3\Qualite_dev\ProjetJeuDeDame\JeuDeDames\JeuDeDame\obj\Debug\JeuDeDames.FormPrincipal.resources
