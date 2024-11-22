@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using JeuDeDames.LogiqueDeJeu;
@@ -31,7 +32,7 @@ namespace JeuDeDames
                     btn.TabIndex = i * taille + j;
 
                     // Couleur de la case
-                    btn.BackColor = (i + j) % 2 == 0 ? System.Drawing.Color.White : ColorTranslator.FromHtml("#493316");
+                    btn.BackColor = (i + j) % 2 == 0 ? ColorTranslator.FromHtml("#DEB887") : ColorTranslator.FromHtml("#493316");
 
                     // Ajout des pions
                     if (plateau.Cases[i, j] == CouleurPion.Blanc)
@@ -76,22 +77,91 @@ namespace JeuDeDames
                         Button targetBtn = (Button)this.Controls[x * taille + y];
                         targetBtn.BackColor = System.Drawing.Color.Blue;
                     }
+
+                    // Afficher les déplacements pour manger un pion
+                    var mouvementsManger = plateau.ObtenirDeplacementsPourManger(i, j);
+                    foreach (var (x, y) in mouvementsManger)
+                    {
+                        Button targetBtn = (Button)this.Controls[x * taille + y];
+                        targetBtn.BackColor = System.Drawing.Color.Green; // Déplacement de manger en vert
+                    }
                 }
             }
             else
             {
-                // Déplacement
+                // Déplacement ou manger
                 int nouvelleCase = btn.TabIndex;
                 int xOrigine = caseSelectionnee.Value / taille;
                 int yOrigine = caseSelectionnee.Value % taille;
 
                 if (plateau.DeplacerPiece(xOrigine, yOrigine, i, j))
                 {
-                    InitializeBoard(taille); // Réinitialiser le plateau après un mouvement valide
+                    // Si le déplacement est un "manger", retirer le pion adverse
+                    if (Math.Abs(i - xOrigine) > 1)
+                    {
+                        int xPionAdverse = (xOrigine + i) / 2;
+                        int yPionAdverse = (yOrigine + j) / 2;
+                        plateau.Cases[xPionAdverse, yPionAdverse] = CouleurPion.Vide; // Enlever le pion adverse
+                        Button btnAdverse = (Button)this.Controls[xPionAdverse * taille + yPionAdverse];
+                        btnAdverse.Text = ""; // Mettre à jour l'interface
+                    }
+
+                    ReinitialiserCouleurs(taille);
+                    MettreAJourCase(xOrigine, yOrigine); // Case d'origine
+                    MettreAJourCase(i, j); // Nouvelle case
                 }
 
                 caseSelectionnee = null; // Réinitialise la sélection
             }
         }
+
+
+
+
+        private void MettreAJourCase(int i, int j)
+        {
+            int taille = (int)Math.Sqrt(plateau.Cases.Length);
+            Button btn = (Button)this.Controls[i * taille + j];
+
+            // Mise à jour du texte et des couleurs selon l'état de la case
+            if (plateau.Cases[i, j] == CouleurPion.Blanc)
+            {
+                btn.Text = "⚪";
+                btn.ForeColor = System.Drawing.Color.White;
+            }
+            else if (plateau.Cases[i, j] == CouleurPion.Gris)
+            {
+                btn.Text = "⚫";
+                btn.ForeColor = System.Drawing.Color.Gray;
+            }
+            else
+            {
+                btn.Text = "";
+            }
+
+            // Restaurer la couleur par défaut si nécessaire
+            btn.BackColor = (i + j) % 2 == 0 ? ColorTranslator.FromHtml("#DEB887") : ColorTranslator.FromHtml("#493316");
+        }
+
+        private void ReinitialiserCouleurs(int taille)
+        {
+            foreach (Control ctrl in this.Controls)
+            {
+                if (ctrl is Button btn)
+                {
+                    int index = btn.TabIndex;
+                    int i = index / taille;
+                    int j = index % taille;
+
+                    // Restaurer la couleur par défaut
+                    btn.BackColor = (i + j) % 2 == 0 ? ColorTranslator.FromHtml("#DEB887") : ColorTranslator.FromHtml("#493316");
+                }
+            }
+        }
+
+        
+
+
+
     }
 }

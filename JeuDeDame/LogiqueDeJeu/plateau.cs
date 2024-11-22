@@ -56,15 +56,65 @@ namespace JeuDeDames.LogiqueDeJeu
             return mouvements;
         }
 
-        public bool DeplacerPiece(int xOrigine, int yOrigine, int xDestination, int yDestination)
+        public bool DeplacerPiece(int xOrigine, int yOrigine, int xDest, int yDest)
         {
-            if (Cases[xDestination, yDestination] == CouleurPion.Vide)
+            int deltaX = xDest - xOrigine;
+            int deltaY = yDest - yOrigine;
+
+            // Vérifier que le déplacement est valide
+            if (Math.Abs(deltaX) == 1 && Math.Abs(deltaY) == 1)
             {
-                Cases[xDestination, yDestination] = Cases[xOrigine, yOrigine];
+                // Déplacement simple
+                Cases[xDest, yDest] = Cases[xOrigine, yOrigine];
                 Cases[xOrigine, yOrigine] = CouleurPion.Vide;
                 return true;
             }
-            return false;
+            else if (Math.Abs(deltaX) == 2 && Math.Abs(deltaY) == 2)
+            {
+                // Déplacement avec saut (manger un pion)
+                int xIntermediaire = xOrigine + deltaX / 2;
+                int yIntermediaire = yOrigine + deltaY / 2;
+
+                if (Cases[xIntermediaire, yIntermediaire] != CouleurPion.Vide &&
+                    Cases[xIntermediaire, yIntermediaire] != Cases[xOrigine, yOrigine])
+                {
+                    // Supprimer le pion mangé
+                    Cases[xIntermediaire, yIntermediaire] = CouleurPion.Vide;
+
+                    // Déplacer le pion
+                    Cases[xDest, yDest] = Cases[xOrigine, yOrigine];
+                    Cases[xOrigine, yOrigine] = CouleurPion.Vide;
+
+                    return true;
+                }
+            }
+
+            return false; // Déplacement non valide
         }
+
+        public List<(int, int)> ObtenirDeplacementsPourManger(int x, int y)
+        {
+            var deplacements = new List<(int, int)>();
+            int[] dx = { -1, -1, 1, 1 }; // Directions diagonales possibles
+            int[] dy = { -1, 1, -1, 1 };
+
+            for (int k = 0; k < 4; k++)
+            {
+                int nx = x + dx[k];
+                int ny = y + dy[k];
+                int nx2 = x + 2 * dx[k];
+                int ny2 = y + 2 * dy[k];
+
+                if (nx >= 0 && ny >= 0 && nx < Cases.GetLength(0) && ny < Cases.GetLength(1) &&
+                    Cases[nx, ny] != CouleurPion.Vide && Cases[nx, ny] != Cases[x, y] &&
+                    Cases[nx2, ny2] == CouleurPion.Vide)
+                {
+                    deplacements.Add((nx2, ny2));
+                }
+            }
+            return deplacements;
+        }
+
+
     }
 }
