@@ -10,6 +10,8 @@ namespace JeuDeDames
     {
         private Plateau plateau;
         private int? caseSelectionnee = null;
+        private CouleurPion joueurActuel = CouleurPion.Blanc; // Par défaut, les Blancs commencent
+
 
         public FormJeu(int taille)
         {
@@ -64,8 +66,8 @@ namespace JeuDeDames
 
             if (caseSelectionnee == null)
             {
-                // Sélection d'un pion
-                if (plateau.Cases[i, j] == CouleurPion.Blanc || plateau.Cases[i, j] == CouleurPion.Gris)
+                // Vérifier que le joueur actif sélectionne ses propres pions
+                if (plateau.Cases[i, j] == joueurActuel)
                 {
                     caseSelectionnee = btn.TabIndex;
                     btn.FlatAppearance.BorderColor = System.Drawing.Color.Yellow;
@@ -89,31 +91,48 @@ namespace JeuDeDames
             }
             else
             {
-                // Déplacement ou manger
+                // Déplacement
                 int nouvelleCase = btn.TabIndex;
                 int xOrigine = caseSelectionnee.Value / taille;
                 int yOrigine = caseSelectionnee.Value % taille;
 
-                if (plateau.DeplacerPiece(xOrigine, yOrigine, i, j))
-                {
-                    // Si le déplacement est un "manger", retirer le pion adverse
-                    if (Math.Abs(i - xOrigine) > 1)
-                    {
-                        int xPionAdverse = (xOrigine + i) / 2;
-                        int yPionAdverse = (yOrigine + j) / 2;
-                        plateau.Cases[xPionAdverse, yPionAdverse] = CouleurPion.Vide; // Enlever le pion adverse
-                        Button btnAdverse = (Button)this.Controls[xPionAdverse * taille + yPionAdverse];
-                        btnAdverse.Text = ""; // Mettre à jour l'interface
-                    }
+                // Valider si le mouvement est autorisé (déplacement ou manger)
+                var mouvementsPossibles = plateau.ObtenirDeplacementsPossibles(xOrigine, yOrigine);
+                var mouvementsPourManger = plateau.ObtenirDeplacementsPourManger(xOrigine, yOrigine);
 
-                    ReinitialiserCouleurs(taille);
-                    MettreAJourCase(xOrigine, yOrigine); // Case d'origine
-                    MettreAJourCase(i, j); // Nouvelle case
+                if (mouvementsPossibles.Contains((i, j)) || mouvementsPourManger.Contains((i, j)))
+                {
+                    if (plateau.DeplacerPiece(xOrigine, yOrigine, i, j))
+                    {
+                        // Si un pion est mangé, le retirer du plateau
+                        if (Math.Abs(xOrigine - i) == 2 && Math.Abs(yOrigine - j) == 2)
+                        {
+                            int xMange = (xOrigine + i) / 2;
+                            int yMange = (yOrigine + j) / 2;
+                            plateau.Cases[xMange, yMange] = CouleurPion.Vide;
+                            MettreAJourCase(xMange, yMange);
+                        }
+
+                        ReinitialiserCouleurs(taille);
+                        MettreAJourCase(xOrigine, yOrigine); // Case d'origine
+                        MettreAJourCase(i, j);              // Case de destination
+
+                        PasserAuTourSuivant(); // Changer de joueur après un déplacement valide
+                    }
                 }
 
-                caseSelectionnee = null; // Réinitialise la sélection
+                caseSelectionnee = null;
             }
         }
+
+
+
+        private void PasserAuTourSuivant()
+        {
+            joueurActuel = (joueurActuel == CouleurPion.Blanc) ? CouleurPion.Gris : CouleurPion.Blanc;
+        }
+
+
 
 
 
@@ -142,6 +161,7 @@ namespace JeuDeDames
             // Restaurer la couleur par défaut si nécessaire
             btn.BackColor = (i + j) % 2 == 0 ? ColorTranslator.FromHtml("#DEB887") : ColorTranslator.FromHtml("#493316");
         }
+
 
         private void ReinitialiserCouleurs(int taille)
         {

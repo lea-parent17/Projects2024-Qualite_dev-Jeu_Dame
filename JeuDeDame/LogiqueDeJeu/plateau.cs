@@ -105,15 +105,22 @@ namespace JeuDeDames.LogiqueDeJeu
                 int nx2 = x + 2 * dx[k];
                 int ny2 = y + 2 * dy[k];
 
-                if (nx >= 0 && ny >= 0 && nx < Cases.GetLength(0) && ny < Cases.GetLength(1) &&
-                    Cases[nx, ny] != CouleurPion.Vide && Cases[nx, ny] != Cases[x, y] &&
-                    Cases[nx2, ny2] == CouleurPion.Vide)
+                // Vérifier que les coordonnées restent dans les limites
+                if (nx2 >= 0 && ny2 >= 0 && nx2 < Cases.GetLength(0) && ny2 < Cases.GetLength(1))
                 {
-                    deplacements.Add((nx2, ny2));
+                    // Vérifier qu'il y a un pion adverse sur la case intermédiaire
+                    if (Cases[nx, ny] != CouleurPion.Vide &&
+                        Cases[nx, ny] != Cases[x, y] &&
+                        Cases[nx2, ny2] == CouleurPion.Vide) // La case derrière doit être vide
+                    {
+                        deplacements.Add((nx2, ny2));
+                    }
                 }
             }
+
             return deplacements;
         }
+
 
 
     }
