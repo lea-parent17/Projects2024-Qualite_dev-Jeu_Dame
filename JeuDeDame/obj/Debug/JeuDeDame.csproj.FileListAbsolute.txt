@@ -21,3 +21,12 @@ C:\Users\alixs\source\repos\Projects2024-Qualite_dev-Jeu_Dame\JeuDames2\JeuDeDam
 C:\Users\alixs\source\repos\Projects2024-Qualite_dev-Jeu_Dame\JeuDames2\JeuDeDame\obj\Debug\JeuDeDame.csproj.CoreCompileInputs.cache
 C:\Users\alixs\source\repos\Projects2024-Qualite_dev-Jeu_Dame\JeuDames2\JeuDeDame\obj\Debug\JeuDeDame.exe
 C:\Users\alixs\source\repos\Projects2024-Qualite_dev-Jeu_Dame\JeuDames2\JeuDeDame\obj\Debug\JeuDeDame.pdb
+C:\Users\leapa\Bureau\BUT_Info\BUT_3\Semestre_5\R5.8_Qualité_dev\Projet\Projects2024-Qualite_dev-Jeu_Dame\JeuDeDame\bin\Debug\JeuDeDame.exe.config
+C:\Users\leapa\Bureau\BUT_Info\BUT_3\Semestre_5\R5.8_Qualité_dev\Projet\Projects2024-Qualite_dev-Jeu_Dame\JeuDeDame\bin\Debug\JeuDeDame.exe
+C:\Users\leapa\Bureau\BUT_Info\BUT_3\Semestre_5\R5.8_Qualité_dev\Projet\Projects2024-Qualite_dev-Jeu_Dame\JeuDeDame\bin\Debug\JeuDeDame.pdb
+C:\Users\leapa\Bureau\BUT_Info\BUT_3\Semestre_5\R5.8_Qualité_dev\Projet\Projects2024-Qualite_dev-Jeu_Dame\JeuDeDame\obj\Debug\JeuDeDame.csproj.AssemblyReference.cache
+C:\Users\leapa\Bureau\BUT_Info\BUT_3\Semestre_5\R5.8_Qualité_dev\Projet\Projects2024-Qualite_dev-Jeu_Dame\JeuDeDame\obj\Debug\JeuDeDame.Properties.Resources.resources
+C:\Users\leapa\Bureau\BUT_Info\BUT_3\Semestre_5\R5.8_Qualité_dev\Projet\Projects2024-Qualite_dev-Jeu_Dame\JeuDeDame\obj\Debug\JeuDeDame.csproj.GenerateResource.cache
+C:\Users\leapa\Bureau\BUT_Info\BUT_3\Semestre_5\R5.8_Qualité_dev\Projet\Projects2024-Qualite_dev-Jeu_Dame\JeuDeDame\obj\Debug\JeuDeDame.csproj.CoreCompileInputs.cache
+C:\Users\leapa\Bureau\BUT_Info\BUT_3\Semestre_5\R5.8_Qualité_dev\Projet\Projects2024-Qualite_dev-Jeu_Dame\JeuDeDame\obj\Debug\JeuDeDame.exe
+C:\Users\leapa\Bureau\BUT_Info\BUT_3\Semestre_5\R5.8_Qualité_dev\Projet\Projects2024-Qualite_dev-Jeu_Dame\JeuDeDame\obj\Debug\JeuDeDame.pdb
