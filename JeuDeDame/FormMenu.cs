@@ -5,7 +5,7 @@ namespace JeuDeDames
 {
     /// <summary>
     /// Classe représentant le menu principal du jeu de dames
-    /// Permet de choisir entre les modes de jeu "Dames Françaises" et "Dames Européennes"
+    /// Permet de choisir entre les modes de jeu "Dames Françaises" et "Dames Internationales"
     /// </summary>
     public partial class FormMenu : Form
     {
@@ -31,7 +31,7 @@ namespace JeuDeDames
         }
 
         /// <summary>
-        /// Gestionnaire d'événement pour le bouton "Dames Européennes (10x10)"
+        /// Gestionnaire d'événement pour le bouton "Dames Internationales (10x10)"
         /// Ouvre un nouveau formulaire de jeu avec un plateau 10x10 et masque le menu principal
         /// </summary>
         /// <param name="sender">Source de l'événement</param>

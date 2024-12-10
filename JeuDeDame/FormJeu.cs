@@ -10,50 +10,104 @@ namespace JeuDeDames
     {
         private Plateau plateau;
         private int? caseSelectionnee = null;
-        private CouleurPion joueurActuel = CouleurPion.Blanc; // Par défaut, les Blancs commencent
-
+        private CouleurPion joueurActuel = CouleurPion.Blanc;
+        private Label lblTourJoueur;
+        private Panel panelPlateau;
+        private int tailleCase = 60; // Taille initiale des cases
 
         public FormJeu(int taille)
         {
             InitializeComponent();
             plateau = new Plateau(taille);
+
+            InitializeGameInfo();
             InitializeBoard(taille);
+            this.Resize += new EventHandler(this.FormJeu_Resize); // Attacher l'événement Resize
+        }
+
+        private void InitializeGameInfo()
+        {
+            lblTourJoueur = new Label();
+            lblTourJoueur.Text = "Tour : Joueur 1";
+            lblTourJoueur.Font = new Font("Arial", 14, FontStyle.Bold);
+            lblTourJoueur.Location = new Point(10, 10);
+            lblTourJoueur.AutoSize = true;
+            this.Controls.Add(lblTourJoueur);
         }
 
         private void InitializeBoard(int taille)
         {
-            this.Controls.Clear(); // Efface les contrôles existants
+            panelPlateau = new Panel
+            {
+                Location = new Point(0, lblTourJoueur.Bottom + 10), // Juste sous le label
+                AutoScroll = true // Permet de défiler si le plateau dépasse
+            };
+
+            this.Controls.Add(panelPlateau);
+
+            RedessinerPlateau(taille);
+        }
+
+        private void RedessinerPlateau(int taille)
+        {
+            panelPlateau.Controls.Clear(); // Efface les anciens contrôles
+
+            int plateauSize = taille * tailleCase;
+            panelPlateau.Size = new Size(plateauSize, plateauSize);
 
             for (int i = 0; i < taille; i++)
             {
                 for (int j = 0; j < taille; j++)
                 {
-                    Button btn = new Button();
-                    btn.Size = new System.Drawing.Size(60, 60);
-                    btn.Location = new System.Drawing.Point(j * 60, i * 60);
-                    btn.TabIndex = i * taille + j;
-
-                    // Couleur de la case
-                    btn.BackColor = (i + j) % 2 == 0 ? ColorTranslator.FromHtml("#DEB887") : ColorTranslator.FromHtml("#493316");
+                    Button btn = new Button
+                    {
+                        Size = new Size(tailleCase, tailleCase),
+                        Location = new Point(j * tailleCase, i * tailleCase),
+                        TabIndex = i * taille + j,
+                        BackColor = (i + j) % 2 == 0 ? ColorTranslator.FromHtml("#DEB887") : ColorTranslator.FromHtml("#493316")
+                    };
 
                     // Ajout des pions
                     if (plateau.Cases[i, j] == CouleurPion.Blanc)
                     {
                         btn.Text = "⚪";
-                        btn.ForeColor = System.Drawing.Color.White;
+                        btn.ForeColor = Color.White;
                     }
                     else if (plateau.Cases[i, j] == CouleurPion.Gris)
                     {
                         btn.Text = "⚫";
-                        btn.ForeColor = System.Drawing.Color.Gray;
+                        btn.ForeColor = Color.Gray;
                     }
 
                     btn.Click += new EventHandler(this.Case_Click);
-                    this.Controls.Add(btn);
+                    panelPlateau.Controls.Add(btn);
                 }
             }
 
-            this.ClientSize = new System.Drawing.Size(taille * 60, taille * 60); // Ajuster la taille de la fenêtre
+            CenterPlateau(); // Centre le plateau à chaque redessin
+        }
+
+        private void FormJeu_Resize(object sender, EventArgs e)
+        {
+            CenterPlateau();
+            AjusterTailleCases();
+        }
+
+        private void CenterPlateau()
+        {
+            int offsetX = (this.ClientSize.Width - panelPlateau.Width) / 2;
+            int offsetY = (this.ClientSize.Height - panelPlateau.Height) / 2;
+
+            panelPlateau.Location = new Point(Math.Max(offsetX, 10), Math.Max(lblTourJoueur.Bottom + 10, offsetY));
+        }
+
+        private void AjusterTailleCases()
+        {
+            int taille = (int)Math.Sqrt(plateau.Cases.Length);
+            int espaceDisponible = Math.Min(this.ClientSize.Width, this.ClientSize.Height - lblTourJoueur.Bottom - 10);
+            tailleCase = Math.Max(40, espaceDisponible / taille); // Taille minimum de 40px
+
+            RedessinerPlateau(taille); // Recalculer le plateau avec la nouvelle taille
         }
 
         private void Case_Click(object sender, EventArgs e)
@@ -66,37 +120,32 @@ namespace JeuDeDames
 
             if (caseSelectionnee == null)
             {
-                // Vérifier que le joueur actif sélectionne ses propres pions
                 if (plateau.Cases[i, j] == joueurActuel)
                 {
                     caseSelectionnee = btn.TabIndex;
-                    btn.FlatAppearance.BorderColor = System.Drawing.Color.Yellow;
+                    btn.FlatAppearance.BorderColor = Color.Yellow;
 
-                    // Afficher les déplacements possibles en bleu
                     var mouvements = plateau.ObtenirDeplacementsPossibles(i, j);
                     foreach (var (x, y) in mouvements)
                     {
-                        Button targetBtn = (Button)this.Controls[x * taille + y];
-                        targetBtn.BackColor = System.Drawing.Color.Blue;
+                        Button targetBtn = (Button)panelPlateau.Controls[x * taille + y];
+                        targetBtn.BackColor = Color.Blue;
                     }
 
-                    // Afficher les déplacements pour manger un pion
                     var mouvementsManger = plateau.ObtenirDeplacementsPourManger(i, j);
                     foreach (var (x, y) in mouvementsManger)
                     {
-                        Button targetBtn = (Button)this.Controls[x * taille + y];
-                        targetBtn.BackColor = System.Drawing.Color.Green; // Déplacement de manger en vert
+                        Button targetBtn = (Button)panelPlateau.Controls[x * taille + y];
+                        targetBtn.BackColor = Color.Green;
                     }
                 }
             }
             else
             {
-                // Déplacement
                 int nouvelleCase = btn.TabIndex;
                 int xOrigine = caseSelectionnee.Value / taille;
                 int yOrigine = caseSelectionnee.Value % taille;
 
-                // Valider si le mouvement est autorisé (déplacement ou manger)
                 var mouvementsPossibles = plateau.ObtenirDeplacementsPossibles(xOrigine, yOrigine);
                 var mouvementsPourManger = plateau.ObtenirDeplacementsPourManger(xOrigine, yOrigine);
 
@@ -104,7 +153,6 @@ namespace JeuDeDames
                 {
                     if (plateau.DeplacerPiece(xOrigine, yOrigine, i, j))
                     {
-                        // Si un pion est mangé, le retirer du plateau
                         if (Math.Abs(xOrigine - i) == 2 && Math.Abs(yOrigine - j) == 2)
                         {
                             int xMange = (xOrigine + i) / 2;
@@ -114,10 +162,10 @@ namespace JeuDeDames
                         }
 
                         ReinitialiserCouleurs(taille);
-                        MettreAJourCase(xOrigine, yOrigine); // Case d'origine
-                        MettreAJourCase(i, j);              // Case de destination
+                        MettreAJourCase(xOrigine, yOrigine);
+                        MettreAJourCase(i, j);
 
-                        PasserAuTourSuivant(); // Changer de joueur après un déplacement valide
+                        PasserAuTourSuivant();
                     }
                 }
 
@@ -125,47 +173,39 @@ namespace JeuDeDames
             }
         }
 
-
-
         private void PasserAuTourSuivant()
         {
             joueurActuel = (joueurActuel == CouleurPion.Blanc) ? CouleurPion.Gris : CouleurPion.Blanc;
+            lblTourJoueur.Text = $"Tour : {(joueurActuel == CouleurPion.Blanc ? "Joueur 1" : "Joueur 2")}";
         }
-
-
-
-
-
 
         private void MettreAJourCase(int i, int j)
         {
             int taille = (int)Math.Sqrt(plateau.Cases.Length);
-            Button btn = (Button)this.Controls[i * taille + j];
+            Button btn = (Button)panelPlateau.Controls[i * taille + j];
 
-            // Mise à jour du texte et des couleurs selon l'état de la case
             if (plateau.Cases[i, j] == CouleurPion.Blanc)
             {
                 btn.Text = "⚪";
-                btn.ForeColor = System.Drawing.Color.White;
+                btn.ForeColor = Color.White;
             }
             else if (plateau.Cases[i, j] == CouleurPion.Gris)
             {
                 btn.Text = "⚫";
-                btn.ForeColor = System.Drawing.Color.Gray;
+                btn.ForeColor = Color.Gray;
             }
             else
             {
                 btn.Text = "";
             }
 
-            // Restaurer la couleur par défaut si nécessaire
             btn.BackColor = (i + j) % 2 == 0 ? ColorTranslator.FromHtml("#DEB887") : ColorTranslator.FromHtml("#493316");
         }
 
 
         private void ReinitialiserCouleurs(int taille)
         {
-            foreach (Control ctrl in this.Controls)
+            foreach (Control ctrl in panelPlateau.Controls)
             {
                 if (ctrl is Button btn)
                 {
@@ -173,15 +213,9 @@ namespace JeuDeDames
                     int i = index / taille;
                     int j = index % taille;
 
-                    // Restaurer la couleur par défaut
                     btn.BackColor = (i + j) % 2 == 0 ? ColorTranslator.FromHtml("#DEB887") : ColorTranslator.FromHtml("#493316");
                 }
             }
         }
-
-        
-
-
-
     }
 }
