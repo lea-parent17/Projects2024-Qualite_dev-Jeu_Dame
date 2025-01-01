@@ -1,6 +1,6 @@
 ﻿namespace JeuV2
 {
-    partial class Form1 {
+    partial class GameForm {
 
         private System.ComponentModel.IContainer components = null;
 
@@ -19,13 +19,13 @@
         {
             this.SuspendLayout();
             // 
-            // Form1
+            // GameForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 261);
-            this.Name = "Form1";
-            this.Text = "Form1";
+            this.Name = "GameForm";
+            this.Text = "GameForm";
             this.ResumeLayout(false);
 
         }
