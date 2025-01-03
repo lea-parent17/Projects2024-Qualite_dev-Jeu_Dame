@@ -1,0 +1,18 @@
+{
+  "version": 2,
+  "dgSpecHash": "YQhG47VOkYI=",
+  "success": false,
+  "projectFilePath": "C:\\Users\\leapa\\Bureau\\BUT_Info\\BUT_3\\Semestre_5\\R5.8_Qualité_dev\\Projet\\Projects2024-Qualite_dev-Jeu_Dame\\JeuDeDameV2\\CheckerGameTest\\CheckerGameTest.csproj",
+  "expectedPackageFiles": [],
+  "logs": [
+    {
+      "code": "NU1201",
+      "level": "Error",
+      "message": "Le projet CheckerGame n'est pas compatible avec net8.0 (.NETCoreApp,Version=v8.0). Le projet CheckerGame prend en charge : net8.0-windows7.0 (.NETCoreApp,Version=v8.0)",
+      "libraryId": "CheckerGame",
+      "targetGraphs": [
+        "net8.0"
+      ]
+    }
+  ]
+}
