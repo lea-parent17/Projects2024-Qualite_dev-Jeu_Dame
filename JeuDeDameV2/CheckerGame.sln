@@ -1,8 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CheckerGame", "CheckerGame\CheckerGame.csproj", "{EF6A271A-83AD-4350-9A71-08EA6C576CDD}"
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35327.3
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CheckerGame", "CheckerGame\CheckerGame.csproj", "{EF6A271A-83AD-4350-9A71-08EA6C576CDD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CheckerGameTest", "CheckerGameTest\CheckerGameTest.csproj", "{DB57AF2F-F38A-4778-90DC-72E8209E1C17}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CheckerGameTestUnitaire", "CheckerGameTestUnitaire\CheckerGameTestUnitaire.csproj", "{221A50B3-92D4-4BFA-8818-C0E94737B3AE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -14,9 +17,15 @@ Global
 		{EF6A271A-83AD-4350-9A71-08EA6C576CDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EF6A271A-83AD-4350-9A71-08EA6C576CDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EF6A271A-83AD-4350-9A71-08EA6C576CDD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DB57AF2F-F38A-4778-90DC-72E8209E1C17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DB57AF2F-F38A-4778-90DC-72E8209E1C17}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DB57AF2F-F38A-4778-90DC-72E8209E1C17}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DB57AF2F-F38A-4778-90DC-72E8209E1C17}.Release|Any CPU.Build.0 = Release|Any CPU
+		{221A50B3-92D4-4BFA-8818-C0E94737B3AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{221A50B3-92D4-4BFA-8818-C0E94737B3AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{221A50B3-92D4-4BFA-8818-C0E94737B3AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{221A50B3-92D4-4BFA-8818-C0E94737B3AE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {90B0332D-B562-4122-96A5-D6DF728FF7EF}
 	EndGlobalSection
 EndGlobal

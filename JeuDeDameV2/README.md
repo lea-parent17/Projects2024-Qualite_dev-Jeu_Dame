@@ -1,2 +1,0 @@
-# CheckersGame
- c sharp checkers
