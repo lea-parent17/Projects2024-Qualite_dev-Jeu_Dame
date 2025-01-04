@@ -17,8 +17,8 @@ public class GameController
     public bool isContinue { get; set; }
     
     public bool isMoving { get; set; }
-    
-    private List<Button> simpleSteps = new List<Button>();
+
+    public List<Button> simpleSteps = new List<Button>();
 
     public GameController(Board board)
     {
@@ -51,7 +51,11 @@ public class GameController
         {
             for (int j = 0; j < Board.MapSize; j++)
             {
-                Board.GameButtons[i, j].BackColor = GetPrevButtonColor(Board.GameButtons[i, j]);
+                if (Board.GameButtons[i, j] != null) // Vérification si le bouton est initialisé
+                {
+                    Board.GameButtons[i, j].BackColor = GetPrevButtonColor(Board.GameButtons[i, j]);
+                }
+                
             }
         }
     }
@@ -71,14 +75,14 @@ public class GameController
             CloseSimpleSteps(simpleSteps);
         }
     }
-    
+
     /// <summary>
     /// Affiche les mouvements possibles
     /// </summary>
     /// <param name="iCurrFigure">Position I du pion sur le plateau</param>
     /// <param name="jCurrFigure">Position J du pion sur le plateau</param>
     /// <param name="isOnestep">Si le pion ne peut se déplacer que d'un mouvement (s'il est une dame ou pas)</param>
-    private void ShowDiagonal(int icurrFigure, int jcurrFigure, bool isOneStep = false)
+    public void ShowDiagonal(int icurrFigure, int jcurrFigure, bool isOneStep = false)
     {
         var j = jcurrFigure + 1;
         for (var i = icurrFigure - 1; i >= 0; i--)
@@ -205,8 +209,15 @@ public class GameController
     /// </summary>
     /// <param name="ti">Position i de la case</param>
     /// <param name="tj">Position j de la case</param>
-    private bool DeterminePath(int ti,int tj)
+    public bool DeterminePath(int ti,int tj)
     {
+        if (Board == null || Board.GameMap == null)
+            throw new InvalidOperationException("Le plateau ou la carte de jeu n'est pas initialisé.");
+
+        if (Board.GameMap[ti, tj] != 1) // Vérifie si une pièce est présente
+            throw new InvalidOperationException("Aucune pièce à cette position.");
+
+
         if (Board.GameMap[ti, tj] == 0 && !isContinue)
         {
             Board.GameButtons[ti, tj].BackColor = Color.Yellow;
@@ -229,14 +240,14 @@ public class GameController
         }
         return true;
     }
-    
+
     /// <summary>
     /// Affiche le chemin pour manger un pion adverse
     /// </summary>
     /// <param name="i">Position i de la case</param>
     /// <param name="j">Position j de la case</param>
     /// <param name="isOneStep">Si le pion ne peut se déplacer que d'un mouvement (s'il est une dame ou pas)</param>
-    private void ShowProceduralEat(int i,int j,bool isOneStep = true)
+    public void ShowProceduralEat(int i,int j,bool isOneStep = true)
     {
         int dirX = i - pressedButton.Location.Y / Board.CellSize;
         int dirY = j - pressedButton.Location.X / Board.CellSize;
@@ -313,7 +324,7 @@ public class GameController
     /// <param name="isOneStep">Si le pion ne peut se déplacer que d'un mouvement (s'il est une dame ou pas)</param>
     /// <param name="dir"></param>
     /// <returns>Si oui ou non le déplacement à manger un pion</returns>
-    private bool IsButtonHasEatStep(int icurrFigure, int jcurrFigure, bool isOneStep, int[] dir)
+    public bool IsButtonHasEatStep(int icurrFigure, int jcurrFigure, bool isOneStep, int[] dir)
     {
         bool eatStep = false;
         int j = jcurrFigure + 1;
@@ -425,7 +436,7 @@ public class GameController
         }
         return eatStep;
     }
-    
+
     /// <summary>
     /// Change le joueur qui doit jouer
     /// </summary>
@@ -435,7 +446,7 @@ public class GameController
         lbl.Text = currentPlayer == 1 ? "Au blanc de jouer" : "Au noir de jouer";
         ResetGame(lblVictory);
     }
-    
+
     /// <summary>
     /// Vérifie si la partie est finie, et désigne un joueur
     /// </summary>
@@ -466,7 +477,7 @@ public class GameController
     /// Remets les couleurs des cases de base sur les cases qui affichaient un chemin
     /// </summary>
     /// <param name="simpleSteps">Liste des boutons où il faut changer la couleur</param>
-    private void CloseSimpleSteps(List<Button> simpleSteps)
+    public void CloseSimpleSteps(List<Button> simpleSteps)
     {
         if (simpleSteps.Count > 0)
         {
@@ -552,7 +563,7 @@ public class GameController
     /// </summary>
     /// <param name="prevButton">Bouton à vérifier</param>
     /// <returns>Si oui ou non, il doit être activé</returns>
-    private bool ButtonShouldBeActive(Button prevButton)
+    public bool ButtonShouldBeActive(Button prevButton)
     {
         if (((prevButton.Location.Y / Board.CellSize % 2) != 0 && (prevButton.Location.X / Board.CellSize % 2) == 0) || ((prevButton.Location.Y / Board.CellSize) % 2 == 0 && (prevButton.Location.X / Board.CellSize) % 2 != 0))
         {

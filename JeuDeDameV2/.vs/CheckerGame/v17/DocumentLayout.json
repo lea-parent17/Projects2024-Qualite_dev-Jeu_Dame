@@ -3,8 +3,28 @@
   "WorkspaceRootPath": "C:\\Users\\leapa\\Bureau\\BUT_Info\\BUT_3\\Semestre_5\\R5.8_Qualit\u00E9_dev\\Projet\\Projects2024-Qualite_dev-Jeu_Dame\\JeuDeDameV2\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{221A50B3-92D4-4BFA-8818-C0E94737B3AE}|CheckerGameTestUnitaire\\CheckerGameTestUnitaire.csproj|c:\\users\\leapa\\bureau\\but_info\\but_3\\semestre_5\\r5.8_qualit\u00E9_dev\\projet\\projects2024-qualite_dev-jeu_dame\\jeudedamev2\\checkergametestunitaire\\gamecontollertest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{221A50B3-92D4-4BFA-8818-C0E94737B3AE}|CheckerGameTestUnitaire\\CheckerGameTestUnitaire.csproj|solutionrelative:checkergametestunitaire\\gamecontollertest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{221A50B3-92D4-4BFA-8818-C0E94737B3AE}|CheckerGameTestUnitaire\\CheckerGameTestUnitaire.csproj|c:\\users\\leapa\\bureau\\but_info\\but_3\\semestre_5\\r5.8_qualit\u00E9_dev\\projet\\projects2024-qualite_dev-jeu_dame\\jeudedamev2\\checkergametestunitaire\\form1test.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{221A50B3-92D4-4BFA-8818-C0E94737B3AE}|CheckerGameTestUnitaire\\CheckerGameTestUnitaire.csproj|solutionrelative:checkergametestunitaire\\form1test.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{221A50B3-92D4-4BFA-8818-C0E94737B3AE}|CheckerGameTestUnitaire\\CheckerGameTestUnitaire.csproj|c:\\users\\leapa\\bureau\\but_info\\but_3\\semestre_5\\r5.8_qualit\u00E9_dev\\projet\\projects2024-qualite_dev-jeu_dame\\jeudedamev2\\checkergametestunitaire\\boardtest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{221A50B3-92D4-4BFA-8818-C0E94737B3AE}|CheckerGameTestUnitaire\\CheckerGameTestUnitaire.csproj|solutionrelative:checkergametestunitaire\\boardtest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EF6A271A-83AD-4350-9A71-08EA6C576CDD}|CheckerGame\\CheckerGame.csproj|c:\\users\\leapa\\bureau\\but_info\\but_3\\semestre_5\\r5.8_qualit\u00E9_dev\\projet\\projects2024-qualite_dev-jeu_dame\\jeudedamev2\\checkergame\\controllers\\gamecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EF6A271A-83AD-4350-9A71-08EA6C576CDD}|CheckerGame\\CheckerGame.csproj|solutionrelative:checkergame\\controllers\\gamecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{EF6A271A-83AD-4350-9A71-08EA6C576CDD}|CheckerGame\\CheckerGame.csproj|c:\\users\\leapa\\bureau\\but_info\\but_3\\semestre_5\\r5.8_qualit\u00E9_dev\\projet\\projects2024-qualite_dev-jeu_dame\\jeudedamev2\\checkergame\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{EF6A271A-83AD-4350-9A71-08EA6C576CDD}|CheckerGame\\CheckerGame.csproj|solutionrelative:checkergame\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EF6A271A-83AD-4350-9A71-08EA6C576CDD}|CheckerGame\\CheckerGame.csproj|c:\\users\\leapa\\bureau\\but_info\\but_3\\semestre_5\\r5.8_qualit\u00E9_dev\\projet\\projects2024-qualite_dev-jeu_dame\\jeudedamev2\\checkergame\\models\\board.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EF6A271A-83AD-4350-9A71-08EA6C576CDD}|CheckerGame\\CheckerGame.csproj|solutionrelative:checkergame\\models\\board.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -14,7 +34,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 7,
+          "SelectedChildIndex": 9,
           "Children": [
             {
               "$type": "Bookmark",
@@ -46,13 +66,65 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Board.cs",
+              "DocumentMoniker": "C:\\Users\\leapa\\Bureau\\BUT_Info\\BUT_3\\Semestre_5\\R5.8_Qualit\u00E9_dev\\Projet\\Projects2024-Qualite_dev-Jeu_Dame\\JeuDeDameV2\\CheckerGame\\Models\\Board.cs",
+              "RelativeDocumentMoniker": "CheckerGame\\Models\\Board.cs",
+              "ToolTip": "C:\\Users\\leapa\\Bureau\\BUT_Info\\BUT_3\\Semestre_5\\R5.8_Qualit\u00E9_dev\\Projet\\Projects2024-Qualite_dev-Jeu_Dame\\JeuDeDameV2\\CheckerGame\\Models\\Board.cs",
+              "RelativeToolTip": "CheckerGame\\Models\\Board.cs",
+              "ViewState": "AgIAAB0AAAAAAAAAAAAAwCMAAAAQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-04T17:33:42.761Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "BoardTest.cs",
+              "DocumentMoniker": "C:\\Users\\leapa\\Bureau\\BUT_Info\\BUT_3\\Semestre_5\\R5.8_Qualit\u00E9_dev\\Projet\\Projects2024-Qualite_dev-Jeu_Dame\\JeuDeDameV2\\CheckerGameTestUnitaire\\BoardTest.cs",
+              "RelativeDocumentMoniker": "CheckerGameTestUnitaire\\BoardTest.cs",
+              "ToolTip": "C:\\Users\\leapa\\Bureau\\BUT_Info\\BUT_3\\Semestre_5\\R5.8_Qualit\u00E9_dev\\Projet\\Projects2024-Qualite_dev-Jeu_Dame\\JeuDeDameV2\\CheckerGameTestUnitaire\\BoardTest.cs",
+              "RelativeToolTip": "CheckerGameTestUnitaire\\BoardTest.cs",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAQwBYAAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-04T16:29:10.761Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "GameContollerTest.cs",
+              "DocumentMoniker": "C:\\Users\\leapa\\Bureau\\BUT_Info\\BUT_3\\Semestre_5\\R5.8_Qualit\u00E9_dev\\Projet\\Projects2024-Qualite_dev-Jeu_Dame\\JeuDeDameV2\\CheckerGameTestUnitaire\\GameContollerTest.cs",
+              "RelativeDocumentMoniker": "CheckerGameTestUnitaire\\GameContollerTest.cs",
+              "ToolTip": "C:\\Users\\leapa\\Bureau\\BUT_Info\\BUT_3\\Semestre_5\\R5.8_Qualit\u00E9_dev\\Projet\\Projects2024-Qualite_dev-Jeu_Dame\\JeuDeDameV2\\CheckerGameTestUnitaire\\GameContollerTest.cs",
+              "RelativeToolTip": "CheckerGameTestUnitaire\\GameContollerTest.cs",
+              "ViewState": "AgIAAF8AAAAAAAAAAAAAwGcAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-04T15:28:58.668Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Form1Test.cs",
+              "DocumentMoniker": "C:\\Users\\leapa\\Bureau\\BUT_Info\\BUT_3\\Semestre_5\\R5.8_Qualit\u00E9_dev\\Projet\\Projects2024-Qualite_dev-Jeu_Dame\\JeuDeDameV2\\CheckerGameTestUnitaire\\Form1Test.cs",
+              "RelativeDocumentMoniker": "CheckerGameTestUnitaire\\Form1Test.cs",
+              "ToolTip": "C:\\Users\\leapa\\Bureau\\BUT_Info\\BUT_3\\Semestre_5\\R5.8_Qualit\u00E9_dev\\Projet\\Projects2024-Qualite_dev-Jeu_Dame\\JeuDeDameV2\\CheckerGameTestUnitaire\\Form1Test.cs",
+              "RelativeToolTip": "CheckerGameTestUnitaire\\Form1Test.cs",
+              "ViewState": "AgIAAJEAAAAAAAAAAAAwwJ4AAABPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-04T14:57:35.408Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
               "Title": "Form1.cs",
               "DocumentMoniker": "C:\\Users\\leapa\\Bureau\\BUT_Info\\BUT_3\\Semestre_5\\R5.8_Qualit\u00E9_dev\\Projet\\Projects2024-Qualite_dev-Jeu_Dame\\JeuDeDameV2\\CheckerGame\\Form1.cs",
               "RelativeDocumentMoniker": "CheckerGame\\Form1.cs",
               "ToolTip": "C:\\Users\\leapa\\Bureau\\BUT_Info\\BUT_3\\Semestre_5\\R5.8_Qualit\u00E9_dev\\Projet\\Projects2024-Qualite_dev-Jeu_Dame\\JeuDeDameV2\\CheckerGame\\Form1.cs",
               "RelativeToolTip": "CheckerGame\\Form1.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAEsAAAAAAAAAAAAuwOIAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-01-04T03:46:02.858Z",
               "EditorCaption": ""
@@ -66,6 +138,40 @@
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "FloatingWindowState": {
+        "Id": "d312eb7c-73aa-4744-ac81-4cda05e21e90",
+        "Display": 1,
+        "X": -5,
+        "Y": 313,
+        "Width": 1543,
+        "Height": 570,
+        "WindowState": 0
+      },
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "GameController.cs",
+              "DocumentMoniker": "C:\\Users\\leapa\\Bureau\\BUT_Info\\BUT_3\\Semestre_5\\R5.8_Qualit\u00E9_dev\\Projet\\Projects2024-Qualite_dev-Jeu_Dame\\JeuDeDameV2\\CheckerGame\\Controllers\\GameController.cs",
+              "RelativeDocumentMoniker": "CheckerGame\\Controllers\\GameController.cs",
+              "ToolTip": "C:\\Users\\leapa\\Bureau\\BUT_Info\\BUT_3\\Semestre_5\\R5.8_Qualit\u00E9_dev\\Projet\\Projects2024-Qualite_dev-Jeu_Dame\\JeuDeDameV2\\CheckerGame\\Controllers\\GameController.cs",
+              "RelativeToolTip": "CheckerGame\\Controllers\\GameController.cs",
+              "ViewState": "AgIAADcAAAAAAAAAAAAAAEgAAAAeAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-04T15:22:07.995Z",
+              "EditorCaption": ""
             }
           ]
         }

@@ -7,8 +7,8 @@ public partial class Form1 : Form
 {
     private readonly GameController _gameController;
 
-    Image whiteFigure;
-    Image blackFigure;
+    public Image whiteFigure;
+    public Image blackFigure;
     
     /// <summary>
     /// Initialise une nouvelle instance de la classe <see cref="GameForm"/>
@@ -31,7 +31,7 @@ public partial class Form1 : Form
     /// Crée l'interface utilisateur pour représenter le plateau de jeu
     /// </summary>
     /// <param name="board">L'objet <see cref="Board"/> Représentant le plateau de jeu</param>
-    private void CreateGameUI(Board board)
+    public void CreateGameUI(Board board)
     {
         for (int y = 0; y < Board.MapSize; y++)
         {
@@ -55,7 +55,7 @@ public partial class Form1 : Form
     /// Mets à jour l'interface utilisateur pour refléter l'état actuel du plateau de jeu
     /// </summary>
     /// <param name="board">L'objet <see cref="Board"/> Représentant le plateau de jeu</param>
-    private void UpdateGameUI(Board board)
+    public void UpdateGameUI(Board board)
     {
         for (int y = 0; y < Board.MapSize; y++)
         {
@@ -103,7 +103,7 @@ public partial class Form1 : Form
     /// Méthode qui gère le déplacement d'un pion
     /// </summary>
     /// <param name="_gameController">L'objet <see cref="GameController"/> représentant le contrôleur des actions de la partie</param>
-    private void IsMoving()
+    public void IsMoving()
     {
         _gameController.isContinue = false;
         
@@ -162,7 +162,7 @@ public partial class Form1 : Form
     /// Méthode qui permet d'afficher à l'utilisateur les différents mouvements possibles ou obligatoires
     /// </summary>
     /// <param name="_gameController">L'objet <see cref="GameController"/> représentant le contrôleur des actions de la partie</param>
-    private void PlayerPossibleMove()
+    public void PlayerPossibleMove()
     {
         _gameController.CloseSteps();
         _gameController.pressedButton.BackColor = Color.Red;
@@ -195,7 +195,7 @@ public partial class Form1 : Form
     /// <summary>
     /// Remets le plateau à son état initial
     /// </summary>
-    private void OnResetGameClick(object sender, EventArgs e)
+    public void OnResetGameClick(object sender, EventArgs e)
     {
         var board = new Board();
         
@@ -213,4 +213,15 @@ public partial class Form1 : Form
         lblVictory.Hide();
         lblPlayerWhoPLay.Text = "Au blanc de jouer";
     }
+
+
+    /// <summary>
+    /// Expose l'objet _gameController
+    /// Pour permetre aux tests d'y accéder sans exposer directement les champs privés
+    /// </summary>
+    public GameController GetGameController()
+    {
+        return _gameController;
+    }
+
 }
