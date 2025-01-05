@@ -18,7 +18,7 @@ namespace CheckerGameTestUnitaire
 
             Assert.IsNotNull(gameController);
             Assert.IsNotNull(board);
-            Assert.AreEqual(1, gameController.currentPlayer); //le joueur courant est 1
+            Assert.AreEqual(1, gameController.CurrentPlayer); //le joueur courant est 1
         }
 
         [TestMethod]
@@ -55,8 +55,8 @@ namespace CheckerGameTestUnitaire
 
             form.UpdateGameUI(board);
 
-            Assert.AreEqual(form.whiteFigure, board.GameButtons[0, 0].Image, "L'image du pion blanc doit être correctement définie.");
-            Assert.AreEqual(form.blackFigure, board.GameButtons[7, 7].Image, "L'image du pion noir doit être correctement définie.");
+            Assert.AreEqual(form.WhiteFigure, board.GameButtons[0, 0].Image, "L'image du pion blanc doit être correctement définie.");
+            Assert.AreEqual(form.BlackFigure, board.GameButtons[7, 7].Image, "L'image du pion noir doit être correctement définie.");
         }
 
         [TestMethod]
@@ -106,9 +106,9 @@ namespace CheckerGameTestUnitaire
             var startButton = board.GameButtons[5, 2];
             var endButton = board.GameButtons[4, 3];
 
-            gameController.pressedButton = endButton;
+            gameController.PressedButton = endButton;
             gameController.PreviousButton = startButton;
-            gameController.isMoving = true;
+            gameController.IsMoving = true;
 
             // Act
             form.IsMoving();
@@ -116,7 +116,7 @@ namespace CheckerGameTestUnitaire
             // Assert
             Assert.AreEqual(0, board.GameMap[5, 2]); // la cellule de depart doit etre vide
             Assert.AreEqual(1, board.GameMap[4, 3]); // la cellule d'arriver doit avoir la piece
-            Assert.AreEqual(2, gameController.currentPlayer); // le tour passe au joueur 2
+            Assert.AreEqual(2, gameController.CurrentPlayer); // le tour passe au joueur 2
         }
 
         [TestMethod]
@@ -131,7 +131,7 @@ namespace CheckerGameTestUnitaire
             board.GameMap[5, 2] = 1;
             var button = board.GameButtons[5, 2];
 
-            gameController.pressedButton = button;
+            gameController.PressedButton = button;
 
             form.PlayerPossibleMove();
 
@@ -149,11 +149,11 @@ namespace CheckerGameTestUnitaire
 
             // Pon fait quelque mouvement
             board.GameMap[5, 2] = 1;
-            gameController.currentPlayer = 2;
+            gameController.CurrentPlayer = 2;
 
             form.OnResetGameClick(null, null);
 
-            Assert.AreEqual(1, gameController.currentPlayer); // le joueur qui doit jouer revient a 1
+            Assert.AreEqual(1, gameController.CurrentPlayer); // le joueur qui doit jouer revient a 1
             Assert.AreEqual(1, board.GameMap[0, 1]); // initialisation de base 
             Assert.AreEqual(2, board.GameMap[5, 0]);
         }

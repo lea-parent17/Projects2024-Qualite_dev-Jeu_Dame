@@ -8,22 +8,22 @@ public class GameController
 
     public Button PreviousButton { get; set; }
 
-    public Button pressedButton { get; set; }
+    public Button PressedButton { get; set; }
 
-    public int countEatSteps { get; set; }
+    public int CountEatSteps { get; set; }
 
-    public int currentPlayer { get; set; }
+    public int CurrentPlayer { get; set; }
 
-    public bool isContinue { get; set; }
+    public bool IsContinue { get; set; }
 
-    public bool isMoving { get; set; }
+    public bool IsMoving { get; set; }
 
-    public List<Button> simpleSteps = new List<Button>();
+    public List<Button> SimpleSteps = new List<Button>();
 
     public GameController(Board board)
     {
-        currentPlayer = 1;
-        isMoving = false;
+        CurrentPlayer = 1;
+        IsMoving = false;
         Board = board;
         PreviousButton = null;
     }
@@ -69,11 +69,11 @@ public class GameController
     /// <param name="isOnestep">si le pion ne peut se deplacer que d'un mouvement (s'il est une dame ou pas)</param>
     public void ShowSteps(int iCurrFigure, int jCurrFigure, bool isOnestep = true)
     {
-        simpleSteps.Clear();
+        SimpleSteps.Clear();
         ShowDiagonal(iCurrFigure, jCurrFigure, isOnestep);
-        if (countEatSteps > 0)
+        if (CountEatSteps > 0)
         {
-            CloseSimpleSteps(simpleSteps);
+            CloseSimpleSteps(SimpleSteps);
         }
     }
 
@@ -88,7 +88,7 @@ public class GameController
         var j = jcurrFigure + 1;
         for (var i = icurrFigure - 1; i >= 0; i--)
         {
-            if (currentPlayer == 1 && isOneStep && !isContinue)
+            if (CurrentPlayer == 1 && isOneStep && !IsContinue)
             {
                 break;
             }
@@ -117,7 +117,7 @@ public class GameController
         j = jcurrFigure - 1;
         for (var i = icurrFigure - 1; i >= 0; i--)
         {
-            if (currentPlayer == 1 && isOneStep && !isContinue)
+            if (CurrentPlayer == 1 && isOneStep && !IsContinue)
             {
                 break;
             }
@@ -147,7 +147,7 @@ public class GameController
         j = jcurrFigure - 1;
         for (var i = icurrFigure + 1; i < 8; i++)
         {
-            if (currentPlayer == 2 && isOneStep && !isContinue)
+            if (CurrentPlayer == 2 && isOneStep && !IsContinue)
             {
                 break;
             }
@@ -177,7 +177,7 @@ public class GameController
         j = jcurrFigure + 1;
         for (var i = icurrFigure + 1; i < 8; i++)
         {
-            if (currentPlayer == 2 && isOneStep && !isContinue)
+            if (CurrentPlayer == 2 && isOneStep && !IsContinue)
             {
                 break;
             }
@@ -212,17 +212,17 @@ public class GameController
     /// <param name="tj">Position j de la case</param>
     public bool DeterminePath(int ti, int tj)
     {
-        if (Board.GameMap[ti, tj] == 0 && !isContinue)
+        if (Board.GameMap[ti, tj] == 0 && !IsContinue)
         {
             Board.GameButtons[ti, tj].BackColor = Color.Yellow;
             Board.GameButtons[ti, tj].Enabled = true;
-            simpleSteps.Add(Board.GameButtons[ti, tj]);
+            SimpleSteps.Add(Board.GameButtons[ti, tj]);
         }
         else
         {
-            if (Board.GameMap[ti, tj] != currentPlayer)
+            if (Board.GameMap[ti, tj] != CurrentPlayer)
             {
-                if (pressedButton.Text == "D")
+                if (PressedButton.Text == "D")
                 {
                     ShowProceduralEat(ti, tj, false);
                 }
@@ -244,8 +244,8 @@ public class GameController
     /// <param name="isOneStep">Si le pion ne peut se déplacer que d'un mouvement (s'il est une dame ou pas)</param>
     public void ShowProceduralEat(int i, int j, bool isOneStep = true)
     {
-        int dirX = i - pressedButton.Location.Y / Board.CellSize;
-        int dirY = j - pressedButton.Location.X / Board.CellSize;
+        int dirX = i - PressedButton.Location.Y / Board.CellSize;
+        int dirY = j - PressedButton.Location.X / Board.CellSize;
         dirX = dirX < 0 ? -1 : 1;
         dirY = dirY < 0 ? -1 : 1;
         int il = i;
@@ -254,7 +254,7 @@ public class GameController
 
         while (Board.IsInsideBorders(il, jl))
         {
-            if (Board.GameMap[il, jl] != 0 && Board.GameMap[il, jl] != currentPlayer)
+            if (Board.GameMap[il, jl] != 0 && Board.GameMap[il, jl] != CurrentPlayer)
             {
                 isEmpty = false;
                 break;
@@ -290,7 +290,7 @@ public class GameController
                 }
                 Board.GameButtons[ik, jk].BackColor = Color.Yellow;
                 Board.GameButtons[ik, jk].Enabled = true;
-                countEatSteps++;
+                CountEatSteps++;
             }
             else
             {
@@ -325,7 +325,7 @@ public class GameController
         int j = jcurrFigure + 1;
         for (int i = icurrFigure - 1; i >= 0; i--)
         {
-            if (currentPlayer == 1 && isOneStep && !isContinue)
+            if (CurrentPlayer == 1 && isOneStep && !IsContinue)
             {
                 break;
             }
@@ -337,7 +337,7 @@ public class GameController
 
             if (Board.IsInsideBorders(i, j))
             {
-                if (Board.GameMap[i, j] != 0 && Board.GameMap[i, j] != currentPlayer)
+                if (Board.GameMap[i, j] != 0 && Board.GameMap[i, j] != CurrentPlayer)
                 {
                     eatStep = true;
                     if (!Board.IsInsideBorders(i - 1, j + 1))
@@ -358,11 +358,11 @@ public class GameController
         j = jcurrFigure - 1;
         for (int i = icurrFigure - 1; i >= 0; i--)
         {
-            if (currentPlayer == 1 && isOneStep && !isContinue) break;
+            if (CurrentPlayer == 1 && isOneStep && !IsContinue) break;
             if (dir[0] == 1 && dir[1] == 1 && !isOneStep) break;
             if (Board.IsInsideBorders(i, j))
             {
-                if (Board.GameMap[i, j] != 0 && Board.GameMap[i, j] != currentPlayer)
+                if (Board.GameMap[i, j] != 0 && Board.GameMap[i, j] != CurrentPlayer)
                 {
                     eatStep = true;
                     if (!Board.IsInsideBorders(i - 1, j - 1))
@@ -383,11 +383,11 @@ public class GameController
         j = jcurrFigure - 1;
         for (int i = icurrFigure + 1; i < 8; i++)
         {
-            if (currentPlayer == 2 && isOneStep && !isContinue) break;
+            if (CurrentPlayer == 2 && isOneStep && !IsContinue) break;
             if (dir[0] == -1 && dir[1] == 1 && !isOneStep) break;
             if (Board.IsInsideBorders(i, j))
             {
-                if (Board.GameMap[i, j] != 0 && Board.GameMap[i, j] != currentPlayer)
+                if (Board.GameMap[i, j] != 0 && Board.GameMap[i, j] != CurrentPlayer)
                 {
                     eatStep = true;
                     if (!Board.IsInsideBorders(i + 1, j - 1))
@@ -408,11 +408,11 @@ public class GameController
         j = jcurrFigure + 1;
         for (int i = icurrFigure + 1; i < 8; i++)
         {
-            if (currentPlayer == 2 && isOneStep && !isContinue) break;
+            if (CurrentPlayer == 2 && isOneStep && !IsContinue) break;
             if (dir[0] == -1 && dir[1] == -1 && !isOneStep) break;
             if (Board.IsInsideBorders(i, j))
             {
-                if (Board.GameMap[i, j] != 0 && Board.GameMap[i, j] != currentPlayer)
+                if (Board.GameMap[i, j] != 0 && Board.GameMap[i, j] != CurrentPlayer)
                 {
                     eatStep = true;
                     if (!Board.IsInsideBorders(i + 1, j + 1))
@@ -437,8 +437,8 @@ public class GameController
     /// </summary>
     public void SwitchPlayer(Label lbl, Label lblVictory)
     {
-        currentPlayer = currentPlayer == 1 ? 2 : 1;
-        lbl.Text = currentPlayer == 1 ? "Au blanc de jouer" : "Au noir de jouer";
+        CurrentPlayer = CurrentPlayer == 1 ? 2 : 1;
+        lbl.Text = CurrentPlayer == 1 ? "Au blanc de jouer" : "Au noir de jouer";
         ResetGame(lblVictory);
     }
 
@@ -496,7 +496,7 @@ public class GameController
         {
             for (int j = 0; j < Board.MapSize; j++)
             {
-                if (Board.GameMap[i, j] == currentPlayer)
+                if (Board.GameMap[i, j] == CurrentPlayer)
                 {
                     if (Board.GameButtons[i, j].Text == "D")
                         isOneStep = false;

@@ -7,8 +7,8 @@ public partial class Form1 : Form
 {
     private readonly GameController _gameController;
 
-    public Image whiteFigure;
-    public Image blackFigure;
+    public Image WhiteFigure;
+    public Image BlackFigure;
     
     /// <summary>
     /// Initialise une nouvelle instance de la classe <see cref="GameForm"/>
@@ -17,10 +17,10 @@ public partial class Form1 : Form
     {
         InitializeComponent();
         
-        whiteFigure = new Bitmap(new Bitmap(@"Sprites\w.png"), new Size(Board.CellSize - 10, Board.CellSize - 10));
-        blackFigure = new Bitmap(new Bitmap(@"Sprites\b.png"), new Size(Board.CellSize - 10, Board.CellSize - 10));
+        WhiteFigure = new Bitmap(new Bitmap(@"Sprites\w.png"), new Size(Board.CellSize - 10, Board.CellSize - 10));
+        BlackFigure = new Bitmap(new Bitmap(@"Sprites\b.png"), new Size(Board.CellSize - 10, Board.CellSize - 10));
         
-        lblVictory.Hide();
+        _lblVictory.Hide();
         
         var _board = new Board();
         _gameController = new GameController(_board);
@@ -63,8 +63,8 @@ public partial class Form1 : Form
             {
                 var button = board.GameButtons[y, x];
                 int piece = board.GameMap[y, x];
-                button.Image = piece == 1 ? whiteFigure :
-                                piece == 2 ? blackFigure : null;
+                button.Image = piece == 1 ? WhiteFigure :
+                                piece == 2 ? BlackFigure : null;
             }
         }
     }
@@ -81,21 +81,21 @@ public partial class Form1 : Form
             _gameController.PreviousButton.BackColor = _gameController.GetPrevButtonColor(_gameController.PreviousButton);
         }
 
-        _gameController.pressedButton = sender as Button;
+        _gameController.PressedButton = sender as Button;
 
-        if(_gameController.pressedButton != null && _gameController.Board.GameMap[_gameController.pressedButton.Location.Y/Board.CellSize,_gameController.pressedButton.Location.X/Board.CellSize] != 0 && _gameController.Board.GameMap[_gameController.pressedButton.Location.Y / Board.CellSize, _gameController.pressedButton.Location.X / Board.CellSize] == _gameController.currentPlayer)
+        if(_gameController.PressedButton != null && _gameController.Board.GameMap[_gameController.PressedButton.Location.Y/Board.CellSize,_gameController.PressedButton.Location.X/Board.CellSize] != 0 && _gameController.Board.GameMap[_gameController.PressedButton.Location.Y / Board.CellSize, _gameController.PressedButton.Location.X / Board.CellSize] == _gameController.CurrentPlayer)
         {
             PlayerPossibleMove();
         }
         else
         {
-            if (_gameController.isMoving)
+            if (_gameController.IsMoving)
             {
                 IsMoving();
             }
         }
 
-        _gameController.PreviousButton = _gameController.pressedButton;
+        _gameController.PreviousButton = _gameController.PressedButton;
     }
 
 
@@ -105,55 +105,55 @@ public partial class Form1 : Form
     /// <param name="_gameController">L'objet <see cref="GameController"/> représentant le contrôleur des actions de la partie</param>
     public void IsMoving()
     {
-        _gameController.isContinue = false;
+        _gameController.IsContinue = false;
         
-        if (Math.Abs(_gameController.pressedButton.Location.X / Board.CellSize - _gameController.PreviousButton.Location.X/Board.CellSize) > 1)
+        if (Math.Abs(_gameController.PressedButton.Location.X / Board.CellSize - _gameController.PreviousButton.Location.X/Board.CellSize) > 1)
         {
-            _gameController.isContinue = true;
-            _gameController.DeleteEaten(_gameController.pressedButton, _gameController.PreviousButton);                        
+            _gameController.IsContinue = true;
+            _gameController.DeleteEaten(_gameController.PressedButton, _gameController.PreviousButton);                        
         }
         
-        int temp = _gameController.Board.GameMap[_gameController.pressedButton.Location.Y / Board.CellSize, _gameController.pressedButton.Location.X / Board.CellSize];
-        _gameController.Board.GameMap[_gameController.pressedButton.Location.Y / Board.CellSize, _gameController.pressedButton.Location.X / Board.CellSize] = _gameController.Board.GameMap[_gameController.PreviousButton.Location.Y / Board.CellSize, _gameController.PreviousButton.Location.X / Board.CellSize];
+        int temp = _gameController.Board.GameMap[_gameController.PressedButton.Location.Y / Board.CellSize, _gameController.PressedButton.Location.X / Board.CellSize];
+        _gameController.Board.GameMap[_gameController.PressedButton.Location.Y / Board.CellSize, _gameController.PressedButton.Location.X / Board.CellSize] = _gameController.Board.GameMap[_gameController.PreviousButton.Location.Y / Board.CellSize, _gameController.PreviousButton.Location.X / Board.CellSize];
         _gameController.Board.GameMap[_gameController.PreviousButton.Location.Y / Board.CellSize, _gameController.PreviousButton.Location.X / Board.CellSize] = temp;
         
-        _gameController.pressedButton.Image = _gameController.PreviousButton.Image;
+        _gameController.PressedButton.Image = _gameController.PreviousButton.Image;
         _gameController.PreviousButton.Image = null;
         
-        _gameController.pressedButton.Text = _gameController.PreviousButton.Text;
+        _gameController.PressedButton.Text = _gameController.PreviousButton.Text;
         _gameController.PreviousButton.Text = "";
         
-        _gameController.SwitchButtonToCheat(_gameController.pressedButton);
+        _gameController.SwitchButtonToCheat(_gameController.PressedButton);
         
-        _gameController.countEatSteps = 0;
-        _gameController.isMoving = false;
+        _gameController.CountEatSteps = 0;
+        _gameController.IsMoving = false;
         
         _gameController.CloseSteps();
         _gameController.DeactivateAllButtons();
         
-        if (_gameController.pressedButton.Text == "D")
+        if (_gameController.PressedButton.Text == "D")
         {
-            _gameController.ShowSteps(_gameController.pressedButton.Location.Y / Board.CellSize,
-                _gameController.pressedButton.Location.X / Board.CellSize, false);
+            _gameController.ShowSteps(_gameController.PressedButton.Location.Y / Board.CellSize,
+                _gameController.PressedButton.Location.X / Board.CellSize, false);
         }
         else
         {
-            _gameController.ShowSteps(_gameController.pressedButton.Location.Y / Board.CellSize,
-                _gameController.pressedButton.Location.X / Board.CellSize);
+            _gameController.ShowSteps(_gameController.PressedButton.Location.Y / Board.CellSize,
+                _gameController.PressedButton.Location.X / Board.CellSize);
         }
         
-        if (_gameController.countEatSteps == 0 || !_gameController.isContinue)
+        if (_gameController.CountEatSteps == 0 || !_gameController.IsContinue)
         {
             _gameController.CloseSteps();
-            _gameController.SwitchPlayer(lblPlayerWhoPLay, lblVictory);
+            _gameController.SwitchPlayer(_lblPlayerWhoPLay, _lblVictory);
             _gameController.ShowPossibleSteps();
-            _gameController.isContinue = false;
+            _gameController.IsContinue = false;
         }
-        else if(_gameController.isContinue)
+        else if(_gameController.IsContinue)
         {
-            _gameController.pressedButton.BackColor = Color.Red;
-            _gameController.pressedButton.Enabled = true;
-            _gameController.isMoving = true;
+            _gameController.PressedButton.BackColor = Color.Red;
+            _gameController.PressedButton.Enabled = true;
+            _gameController.IsMoving = true;
         }
     }
 
@@ -165,30 +165,30 @@ public partial class Form1 : Form
     public void PlayerPossibleMove()
     {
         _gameController.CloseSteps();
-        _gameController.pressedButton.BackColor = Color.Red;
+        _gameController.PressedButton.BackColor = Color.Red;
         _gameController.DeactivateAllButtons();
-        _gameController.pressedButton.Enabled = true;
-        _gameController.countEatSteps = 0;
+        _gameController.PressedButton.Enabled = true;
+        _gameController.CountEatSteps = 0;
 
-        if (_gameController.pressedButton.Text == "D")
+        if (_gameController.PressedButton.Text == "D")
         {
-            _gameController.ShowSteps(_gameController.pressedButton.Location.Y / Board.CellSize, _gameController.pressedButton.Location.X / Board.CellSize,false);
+            _gameController.ShowSteps(_gameController.PressedButton.Location.Y / Board.CellSize, _gameController.PressedButton.Location.X / Board.CellSize,false);
         }
         else
         {
-            _gameController.ShowSteps(_gameController.pressedButton.Location.Y / Board.CellSize, _gameController.pressedButton.Location.X / Board.CellSize);
+            _gameController.ShowSteps(_gameController.PressedButton.Location.Y / Board.CellSize, _gameController.PressedButton.Location.X / Board.CellSize);
         }
 
-        if (_gameController.isMoving)
+        if (_gameController.IsMoving)
         {
             _gameController.CloseSteps();
-            _gameController.pressedButton.BackColor = _gameController.GetPrevButtonColor(_gameController.pressedButton);
+            _gameController.PressedButton.BackColor = _gameController.GetPrevButtonColor(_gameController.PressedButton);
             _gameController.ShowPossibleSteps();
-            _gameController.isMoving = false;
+            _gameController.IsMoving = false;
         }
         else
         {
-            _gameController.isMoving = true;
+            _gameController.IsMoving = true;
         }
     }
 
@@ -202,16 +202,16 @@ public partial class Form1 : Form
         Controls.Clear();
         
         _gameController.Board = board;
-        _gameController.currentPlayer = 1;
+        _gameController.CurrentPlayer = 1;
         
         CreateGameUI(board);
         
-        Controls.Add(clearbtn);
-        Controls.Add(lblVictory);
-        Controls.Add(lblPlayerWhoPLay);
+        Controls.Add(_clearbtn);
+        Controls.Add(_lblVictory);
+        Controls.Add(_lblPlayerWhoPLay);
         
-        lblVictory.Hide();
-        lblPlayerWhoPLay.Text = "Au blanc de jouer";
+        _lblVictory.Hide();
+        _lblPlayerWhoPLay.Text = "Au blanc de jouer";
     }
 
 

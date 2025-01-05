@@ -2,6 +2,8 @@
 using CheckerGame.Models;
 using System.Drawing;
 using System.Windows.Forms;
+using CheckerGame;
+
 
 
 namespace CheckerGameTestUnitaire
@@ -52,89 +54,103 @@ namespace CheckerGameTestUnitaire
 
 
         [TestMethod]
+        [Description("Test ")]
         public void ShowSteps_ShouldDisplayValidMoves()
         {
-            // Arrange
+            var form = new Form1();
+
             _board.GameMap[2, 2] = 1;
             _board.GameButtons[2, 2] = new Button { Text = "" };
+            form.CreateGameUI(_board);
 
-            // Act
             _controller.ShowSteps(2, 2);
 
-            // Assert
-            foreach (var btn in _controller.simpleSteps)
+            foreach (var btn in _controller.SimpleSteps)
             {
                 Assert.AreEqual(Color.Yellow, btn.BackColor);
             }
         }
 
+
         [TestMethod]
+        [Description("Test ")]
         public void ShowDiagonal_ShouldHighlightDiagonalMoves()
         {
-            // Arrange
+            var form = new Form1();
+
             _board.GameMap[3, 3] = 1;
             _board.GameButtons[4, 4] = new Button();
             _board.GameButtons[5, 5] = new Button();
+            form.CreateGameUI(_board);
 
-            // Act
             _controller.ShowDiagonal(3, 3, true);
 
-            // Assert
             Assert.IsTrue(_board.GameButtons[4, 4].Enabled);
             Assert.IsTrue(_board.GameButtons[5, 5].Enabled);
         }
 
+
         [TestMethod]
+        [Description("Test ")]
         public void DeterminePath_ShouldHighlightValidMoves()
         {
-            // Arrange
+            var form = new Form1(); //
             _board.GameMap[3, 3] = 1;
+            form.CreateGameUI(_board); //
             _board.GameButtons[4, 4] = new Button();
 
-            // Act
             var result = _controller.DeterminePath(4, 4);
 
-            // Assert
             Assert.IsTrue(result);
             Assert.AreEqual(Color.Yellow, _board.GameButtons[4, 4].BackColor);
         }
 
+
         [TestMethod]
+        [Description("Test ")]
         public void DeterminePath_ShouldReturnFalse_IfPathBlocked()
         {
-            // Arrange
-            _board.GameMap[4, 4] = 2;
+            var form = new Form1();
 
-            // Act
+            _board.GameMap[4, 4] = 2;
+            form.CreateGameUI(_board);
+            _controller.PressedButton = new Button();
+
             var result = _controller.DeterminePath(4, 4);
 
-            // Assert
             Assert.IsFalse(result);
         }
 
+
+
         [TestMethod]
+        [Description("Test ")]
         public void ShowProceduralEat_ShouldHighlightCapturePath()
         {
-            // Arrange
-            _board.GameMap[3, 3] = 1;
-            _board.GameMap[4, 4] = 2;
-            _board.GameButtons[5, 5] = new Button();
+            var form = new Form1();
+            _board.GameMap = new int[8, 8];
 
-            // Act
-            _controller.ShowProceduralEat(4, 4);
+            _board.GameMap[4, 3] = 2;
+            _board.GameButtons[4, 3] = new Button();
+            _board.GameButtons[5, 4] = new Button();
+            _controller.PressedButton = _board.GameButtons[4, 3];
+            form.CreateGameUI(_board);
 
-            // Assert
-            Assert.AreEqual(Color.Yellow, _board.GameButtons[5, 5].BackColor);
+            _controller.ShowProceduralEat(4, 3);
+
+            Assert.AreEqual(Color.Yellow, _board.GameButtons[5, 4].BackColor);
         }
 
-
+        ///////////////////////////////////////////////////
 
         //A ajouter ----> IsButtonHasEatStep
 
 
+        ///////////////////////////////////////////////////
 
 
         [TestMethod]
+        [Description("Test que le changement de joueur s'effectue bien entre chaque tour et que l'affichage se met également à jour")]
         public void SwitchPlayer_ShouldUpdateCurrentPlayer()
         {
             var lbl = new Label();
@@ -142,51 +158,91 @@ namespace CheckerGameTestUnitaire
 
             _controller.SwitchPlayer(lbl, lblVictory);
 
-            Assert.AreEqual(2, _controller.currentPlayer);
+            Assert.AreEqual(2, _controller.CurrentPlayer);
             Assert.AreEqual("Au noir de jouer", lbl.Text);
         }
 
         [TestMethod]
-        public void ResetGame_ShouldDeclareWinner_IfNoPiecesLeft()
+        [Description("Test que la victoire est bien prise en compte (le joueur 1 gagne lorsque le joueur 2 n'a plus de pièces)")]
+        public void ResetGame_ShouldDeclareWinner_IfNoPiecesLeft2()
         {
-            // Arrange
-            _board.GameMap[0, 0] = 1;
-            _board.GameMap[7, 7] = 0;
+            _board.GameMap = new int[8, 8]; // Initialise un plateau vide.
+            _board.GameMap[0, 0] = 1; // Place une pièce pour le joueur 1 (blanc).
             var lblVictory = new Label();
 
-            // Act
             _controller.ResetGame(lblVictory);
 
-            // Assert
             Assert.AreEqual("Victoire du joueur blanc !!!", lblVictory.Text);
+            Assert.AreEqual(Color.Transparent, lblVictory.BackColor);
         }
 
+        /////////////////////////////////////////////////////////
 
         // A ajouter ---->  CloseSimpleSteps
+
+
 
 
         // A ajouter ----> ShowPossibleSteps
 
 
-        // A ajouter ----> DeleteEaten
+        /////////////////////////////////////////////////////////
 
-
-
-        // A ajouter ----> SwitchButtonToCheat
-
-
-
-
-
-        /////////////////////////////////A revoir///////////////////////
         [TestMethod]
+        [Description("Test ")]
+        public void DeleteEaten_ShouldRemoveEatenPiece2()
+        {
+            var form = new Form1();
+            _board.GameMap = new int[8, 8];
+            form.CreateGameUI(_board);
+
+            Button startButton = _controller.Board.GameButtons[2, 3]; // Bouton de départ
+            Button endButton = _controller.Board.GameButtons[4, 5];   // Bouton d'arrivée
+
+            _controller.Board.GameMap[3, 4] = 1; // Pion adverse (eaten piece)
+
+            _controller.DeleteEaten(endButton, startButton);
+
+            Assert.AreEqual(0, _controller.Board.GameMap[3, 4]);  // La position doit maintenant être vide
+            Assert.IsNull(_controller.Board.GameButtons[3, 4].Image);  // L'image doit être null
+            Assert.AreEqual("", _controller.Board.GameButtons[3, 4].Text);  // Le texte doit être vide
+        }
+
+
+
+        [TestMethod]
+        [Description("Test ")]
+        public void SwitchButtonToCheat_ShouldChangeStateToCheat()
+        {
+            _controller.Board.GameMap = new int[8, 8];
+            _controller.Board.GameButtons = new Button[8, 8];
+
+            var button = new Button
+            {
+                Location = new Point(3 * Board.CellSize, 7 * Board.CellSize), // Colonne 3, ligne 7
+                Text = string.Empty
+            };
+            _controller.Board.GameButtons[7, 3] = button;
+
+            // Indique que le bouton correspond à un pion du joueur 1 (1 dans GameMap)
+            _controller.Board.GameMap[7, 3] = 1;
+
+            _controller.SwitchButtonToCheat(button);
+
+            Assert.AreEqual("D", button.Text);
+            Assert.IsTrue(button.Enabled);
+        }
+
+
+        [TestMethod]
+        [Description("Test ")]
         public void ButtonShouldBeActive_ShouldReturnTrueForValidPositions()
         {
             var validPositions = new[]
             {
-            new Point(0, 50),  // Blanc
+            new Point(0, 50),  // Gris
             new Point(50, 0),  // Gris
-            new Point(100, 150), // Blanc
+            new Point(100, 150), // Gris
             new Point(150, 100)  // Gris
             };
 
@@ -201,14 +257,15 @@ namespace CheckerGameTestUnitaire
         }
 
         [TestMethod]
+        [Description("Test ")]
         public void ButtonShouldBeActive_ShouldReturnFalseForInvalidPositions()
         {
             var invalidPositions = new[]
             {
-            new Point(0, 0),    // Noir
-            new Point(50, 50),  // Noir
-            new Point(100, 100), // Noir
-            new Point(150, 150) // Noir
+            new Point(0, 0),    // Blanc
+            new Point(50, 50),  // Blanc
+            new Point(100, 100), // Blanc
+            new Point(150, 150) // Blanc
             };
 
             foreach (var position in invalidPositions)
@@ -221,9 +278,9 @@ namespace CheckerGameTestUnitaire
             }
         }
 
-        /////////////////////////////////A revoir///////////////////////
 
         [TestMethod]
+        [Description("Test ")]
         public void ActivateAllNecessaryButtons_ShouldEnableValidButtons()
         {
 
@@ -261,6 +318,7 @@ namespace CheckerGameTestUnitaire
         }
 
         [TestMethod]
+        [Description("Test ")]
         public void DeactivateAllButtons_ShouldDisableAllButtons()
         {            
             for (int i = 0; i < _board.GameMap.GetLength(0); i++)
