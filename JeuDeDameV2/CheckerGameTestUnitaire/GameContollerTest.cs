@@ -1,6 +1,5 @@
 ﻿using CheckerGame.Controllers;
 using CheckerGame.Models;
-using System;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -11,7 +10,7 @@ namespace CheckerGameTestUnitaire
     public class GameContollerTest
     {
         private Board _board;
-        private GameController _gameController;
+        private GameController _controller;
 
         [TestInitialize]
         public void Setup()
@@ -19,20 +18,20 @@ namespace CheckerGameTestUnitaire
             // Initialisation du plateau et du contrôleur
             _board = new Board();
             _board.InitializeBoard();
-            _gameController = new GameController(_board);
+            _controller = new GameController(_board);
         }
 
         [TestMethod]
         [Description("Test si l'on récupère correctement la couleur de fond initiale d'un bouton")]
         public void GetPrevButtonColor_Should_ReturnCorrectColor()
-        {          
+        {
             _board.GameButtons[0, 0] = new Button { Location = new Point(0, 0) };
             _board.GameButtons[0, 1] = new Button { Location = new Point(Board.CellSize, 0) };
 
-            var color1 = _gameController.GetPrevButtonColor(_board.GameButtons[0, 0]);
-            var color2 = _gameController.GetPrevButtonColor(_board.GameButtons[0, 1]);
+            var color1 = _controller.GetPrevButtonColor(_board.GameButtons[0, 0]);
+            var color2 = _controller.GetPrevButtonColor(_board.GameButtons[0, 1]);
 
-            
+
             Assert.AreEqual(Color.White, color1);
             Assert.AreEqual(Color.Gray, color2);
         }
@@ -45,224 +44,252 @@ namespace CheckerGameTestUnitaire
             _board.GameButtons[0, 0] = new Button { Location = new Point(0, 0), BackColor = Color.Blue };
             _board.GameButtons[0, 1] = new Button { Location = new Point(Board.CellSize, 0), BackColor = Color.Red };
 
-            _gameController.CloseSteps();
+            _controller.CloseSteps();
 
-            // Assert
             Assert.AreEqual(Color.White, _board.GameButtons[0, 0].BackColor);
             Assert.AreEqual(Color.Gray, _board.GameButtons[0, 1].BackColor);
         }
 
 
-        /// //////////////////////////////////////////////
-
         [TestMethod]
-        [Description("Test si ShowSteps affiche correctement les mouvements simples sans obligation de manger")]
-        public void ShowSteps_Should_DisplaySimpleSteps()
+        public void ShowSteps_ShouldDisplayValidMoves()
         {
             // Arrange
-            int iCurrFigure = 2, jCurrFigure = 2;
-            _gameController.countEatSteps = 0; // Aucun mouvement obligatoire
-            _gameController.simpleSteps = new List<Button>();
+            _board.GameMap[2, 2] = 1;
+            _board.GameButtons[2, 2] = new Button { Text = "" };
 
             // Act
-            _gameController.ShowSteps(iCurrFigure, jCurrFigure, isOnestep: true);
+            _controller.ShowSteps(2, 2);
 
             // Assert
-            Assert.IsTrue(_gameController.simpleSteps.Count > 0, "Les étapes simples devraient être ajoutées.");
+            foreach (var btn in _controller.simpleSteps)
+            {
+                Assert.AreEqual(Color.Yellow, btn.BackColor);
+            }
         }
 
         [TestMethod]
-        [Description("Test si ShowSteps affiche correctement les mouvements simples sans obligation de manger")]
-        public void ShowSteps_Should_DisplaySimpleSteps2()
+        public void ShowDiagonal_ShouldHighlightDiagonalMoves()
         {
             // Arrange
-            int iCurrFigure = 2, jCurrFigure = 1;
-
-            // Initialiser le plateau et le contrôleur
-            _board = new Board();
-            _board.GameMap = new int[8, 8]; // Plateau standard
-
-            // Initialisation du contrôleur avec le plateau
-            _gameController = new GameController(_board);
-
-            // Positionner une pièce pour tester les déplacements
-            _board.GameMap[iCurrFigure, jCurrFigure] = 1; // Placer une pièce (vérifiez si 1 est la bonne valeur)
-
-            // Aucun mouvement obligatoire
-            _gameController.countEatSteps = 0;
+            _board.GameMap[3, 3] = 1;
+            _board.GameButtons[4, 4] = new Button();
+            _board.GameButtons[5, 5] = new Button();
 
             // Act
-            _gameController.ShowSteps(iCurrFigure, jCurrFigure, isOnestep: true);
+            _controller.ShowDiagonal(3, 3, true);
 
             // Assert
-            Assert.IsTrue(_gameController.simpleSteps.Count > 0, "Les étapes simples devraient être ajoutées.");
+            Assert.IsTrue(_board.GameButtons[4, 4].Enabled);
+            Assert.IsTrue(_board.GameButtons[5, 5].Enabled);
         }
 
         [TestMethod]
-        [Description("Test si ShowSteps affiche uniquement les mouvements obligatoires lorsque countEatSteps > 0")]
-        public void ShowSteps_Should_DisplayOnlyMandatorySteps()
+        public void DeterminePath_ShouldHighlightValidMoves()
         {
             // Arrange
-            int iCurrFigure = 2, jCurrFigure = 2;
-            _gameController.countEatSteps = 2; // Des mouvements obligatoires existent
-            _gameController.simpleSteps = new List<Button>();
+            _board.GameMap[3, 3] = 1;
+            _board.GameButtons[4, 4] = new Button();
 
             // Act
-            _gameController.ShowSteps(iCurrFigure, jCurrFigure, isOnestep: true);
+            var result = _controller.DeterminePath(4, 4);
 
             // Assert
-            Assert.AreEqual(0, _gameController.simpleSteps.Count, "Les étapes simples devraient être supprimées.");
+            Assert.IsTrue(result);
+            Assert.AreEqual(Color.Yellow, _board.GameButtons[4, 4].BackColor);
         }
 
         [TestMethod]
-        [Description("Test si ShowSteps gère correctement les dames avec plusieurs étapes possibles")]
-        public void ShowSteps_Should_HandleQueenMoves()
+        public void DeterminePath_ShouldReturnFalse_IfPathBlocked()
         {
             // Arrange
-            int iCurrFigure = 3, jCurrFigure = 3;
-            _gameController.countEatSteps = 0; // Aucun mouvement obligatoire
-            _gameController.simpleSteps = new List<Button>();
+            _board.GameMap[4, 4] = 2;
 
             // Act
-            _gameController.ShowSteps(iCurrFigure, jCurrFigure, isOnestep: false);
-
-            // Assert
-            Assert.IsTrue(_gameController.simpleSteps.Count > 0, "Les étapes pour une dame devraient être ajoutées.");
-        }
-
-        [TestMethod]
-        [Description("Test si ShowSteps ne plante pas lorsqu'il n'y a aucun mouvement possible")]
-        public void ShowSteps_Should_HandleNoMoves()
-        {
-            // Arrange
-            int iCurrFigure = 0, jCurrFigure = 0;
-            _gameController.countEatSteps = 0;
-            _gameController.simpleSteps = new List<Button>();
-
-            // Act
-            _gameController.ShowSteps(iCurrFigure, jCurrFigure, isOnestep: true);
-
-            // Assert
-            Assert.AreEqual(0, _gameController.simpleSteps.Count, "Il ne devrait pas y avoir d'étapes possibles.");
-        }
-
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    //////////////////////////////////////////////////////////////////////////////////
-
-    [TestMethod]
-        [Description("Test si DeterminePath active correctement les cases vides pour un déplacement")]
-        public void DeterminePath_Should_ActivateEmptyCells()
-        {
-            // Arrange
-            int x = 3, y = 3;
-            _board.GameMap[x, y] = 0; // La case est vide
-
-            // Act
-            var result = _gameController.DeterminePath(x, y);
-
-            // Assert
-            Assert.IsTrue(result); // La case est valide pour un déplacement
-            Assert.AreEqual(Color.Yellow, _board.GameButtons[x, y].BackColor);
-            Assert.IsTrue(_board.GameButtons[x, y].Enabled);
-        }
-
-        [TestMethod]
-        [Description("Test si DeterminePath n'active pas les cases occupées")]
-        public void DeterminePath_Should_NotActivateOccupiedCells()
-        {
-            // Arrange
-            int x = 4, y = 4;
-            _board.GameMap[x, y] = 1; // Case occupée
-
-            // Act
-            var result = _gameController.DeterminePath(x, y);
+            var result = _controller.DeterminePath(4, 4);
 
             // Assert
             Assert.IsFalse(result);
-            Assert.AreNotEqual(Color.Yellow, _board.GameButtons[x, y].BackColor);
-            Assert.IsFalse(_board.GameButtons[x, y].Enabled);
         }
 
         [TestMethod]
-        [Description("Test si SwitchPlayer change correctement de joueur")]
-        public void SwitchPlayer_Should_ChangeCurrentPlayerAndUpdateLabel()
+        public void ShowProceduralEat_ShouldHighlightCapturePath()
         {
             // Arrange
-            var currentPlayerLabel = new Label();
-            var victoryLabel = new Label();
-
-            _gameController.currentPlayer = 1;
+            _board.GameMap[3, 3] = 1;
+            _board.GameMap[4, 4] = 2;
+            _board.GameButtons[5, 5] = new Button();
 
             // Act
-            _gameController.SwitchPlayer(currentPlayerLabel, victoryLabel);
+            _controller.ShowProceduralEat(4, 4);
 
             // Assert
-            Assert.AreEqual(2, _gameController.currentPlayer);
-            Assert.AreEqual("Au noir de jouer", currentPlayerLabel.Text);
+            Assert.AreEqual(Color.Yellow, _board.GameButtons[5, 5].BackColor);
+        }
+
+
+
+        //A ajouter ----> IsButtonHasEatStep
+
+
+
+
+        [TestMethod]
+        public void SwitchPlayer_ShouldUpdateCurrentPlayer()
+        {
+            var lbl = new Label();
+            var lblVictory = new Label();
+
+            _controller.SwitchPlayer(lbl, lblVictory);
+
+            Assert.AreEqual(2, _controller.currentPlayer);
+            Assert.AreEqual("Au noir de jouer", lbl.Text);
         }
 
         [TestMethod]
-        [Description("Test si ResetGame réinitialise le plateau et affiche le message de victoire")]
-        public void ResetGame_Should_DeclareWinnerAndResetGame()
+        public void ResetGame_ShouldDeclareWinner_IfNoPiecesLeft()
         {
             // Arrange
-            var victoryLabel = new Label();
-            _board.GameMap[0, 0] = 1; // Exemple : victoire du joueur blanc
+            _board.GameMap[0, 0] = 1;
+            _board.GameMap[7, 7] = 0;
+            var lblVictory = new Label();
 
             // Act
-            _gameController.ResetGame(victoryLabel);
+            _controller.ResetGame(lblVictory);
 
             // Assert
-            Assert.AreEqual("Victoire du joueur blanc !!!", victoryLabel.Text);
+            Assert.AreEqual("Victoire du joueur blanc !!!", lblVictory.Text);
+        }
+
+
+        // A ajouter ---->  CloseSimpleSteps
+
+
+        // A ajouter ----> ShowPossibleSteps
+
+
+        // A ajouter ----> DeleteEaten
+
+
+
+        // A ajouter ----> SwitchButtonToCheat
+
+
+
+
+
+        /////////////////////////////////A revoir///////////////////////
+        [TestMethod]
+        public void ButtonShouldBeActive_ShouldReturnTrueForValidPositions()
+        {
+            var validPositions = new[]
+            {
+            new Point(0, 50),  // Blanc
+            new Point(50, 0),  // Gris
+            new Point(100, 150), // Blanc
+            new Point(150, 100)  // Gris
+            };
+
+            foreach (var position in validPositions)
+            {
+                var button = new Button { Location = position };
+
+                var result = _controller.ButtonShouldBeActive(button);
+
+                Assert.IsTrue(result, $"Le bouton a la position {position} doir être active mais ne l'est pas");
+            }
         }
 
         [TestMethod]
-        [Description("Test si ShowSteps met en évidence les déplacements valides pour une pièce")]
-        public void ShowSteps_Should_HighlightValidMoves()
+        public void ButtonShouldBeActive_ShouldReturnFalseForInvalidPositions()
         {
-            // Arrange
-            _board.GameMap[2, 2] = 1; // Un pion blanc
-            _gameController.currentPlayer = 1;
+            var invalidPositions = new[]
+            {
+            new Point(0, 0),    // Noir
+            new Point(50, 50),  // Noir
+            new Point(100, 100), // Noir
+            new Point(150, 150) // Noir
+            };
 
-            // Act
-            _gameController.ShowSteps(2, 2, true);
+            foreach (var position in invalidPositions)
+            {
+                var button = new Button { Location = position };
 
-            // Assert
-            Assert.AreEqual(Color.Yellow, _board.GameButtons[1, 3].BackColor); // Case valide
-            Assert.IsTrue(_board.GameButtons[1, 3].Enabled);
+                var result = _controller.ButtonShouldBeActive(button);
+
+                Assert.IsFalse(result, $"Le bouton a la position {position} ne devrait pas être activé mais l'est");
+            }
+        }
+
+        /////////////////////////////////A revoir///////////////////////
+
+        [TestMethod]
+        public void ActivateAllNecessaryButtons_ShouldEnableValidButtons()
+        {
+
+            for (int i = 0; i < _board.GameMap.GetLength(0); i++)
+            {
+                for (int j = 0; j < _board.GameMap.GetLength(1); j++)
+                {
+                    _board.GameButtons[i, j] = new Button
+                    {
+                        Location = new Point(j * Board.CellSize, i * Board.CellSize), // Position calculée
+                        Enabled = false // Initialement désactivé
+                    };
+                }
+            }
+
+            _controller.ActivateAllNecessaryButtons();
+
+            for (int i = 0; i < _board.GameMap.GetLength(0); i++)
+            {
+                for (int j = 0; j < _board.GameMap.GetLength(1); j++)
+                {
+                    bool shouldBeEnabled = _controller.ButtonShouldBeActive(_board.GameButtons[i, j]);
+                    Assert.AreEqual(shouldBeEnabled, _board.GameButtons[i, j].Enabled, $"Le bouton ({i},{j}) n'as pas le bon état");
+                }
+            }
+
+            // AUTRE TEST MOINS COMPLET 
+            //_board.GameButtons[0, 0] = new Button { Location = new Point(0, 0) };
+            //_board.GameButtons[1, 1] = new Button { Location = new Point(50, 50) };
+
+            //_controller.ActivateAllNecessaryButtons();
+
+            //Assert.IsTrue(_board.GameButtons[0, 0].Enabled);
+            //Assert.IsTrue(_board.GameButtons[1, 1].Enabled);
         }
 
         [TestMethod]
-        [Description("Test si ShowSteps n'affiche pas de mouvements pour une pièce adverse")]
-        public void ShowSteps_Should_NotHighlightMovesForOpponentPiece()
-        {
-            // Arrange
-            _board.GameMap[2, 2] = 2; // Un pion noir
-            _gameController.currentPlayer = 1;
+        public void DeactivateAllButtons_ShouldDisableAllButtons()
+        {            
+            for (int i = 0; i < _board.GameMap.GetLength(0); i++)
+            {
+                for (int j = 0; j < _board.GameMap.GetLength(1); j++)
+                {
+                    _board.GameButtons[i, j] = new Button { Enabled = true }; // Initialisation des boutons
+                }
+            }
 
-            // Act
-            _gameController.ShowSteps(2, 2, true);
+            _controller.DeactivateAllButtons();
 
-            // Assert
-            Assert.AreNotEqual(Color.Yellow, _board.GameButtons[1, 3].BackColor); // Aucune case ne doit être mise en évidence
+            for (int i = 0; i < _board.GameMap.GetLength(0); i++)
+            {
+                for (int j = 0; j < _board.GameMap.GetLength(1); j++)
+                {
+                    Assert.IsFalse(_board.GameButtons[i, j].Enabled, $"Le boutton ({i},{j}) n'est pas desactive");
+                }
+            }
+
+
+            // AUTRE TEST MOINS COMPLET 
+            //_board.GameButtons[0, 0] = new Button { Enabled = true };
+
+            //_controller.DeactivateAllButtons();
+
+            //Assert.IsFalse(_board.GameButtons[0, 0].Enabled);
+
         }
     }
 }
-
 

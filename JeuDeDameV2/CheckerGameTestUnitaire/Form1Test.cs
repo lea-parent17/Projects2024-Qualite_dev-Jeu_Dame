@@ -8,7 +8,7 @@ namespace CheckerGameTestUnitaire
     public class Form1Test
     {
         [TestMethod]
-        [Description("Test ")]
+        [Description("Test que l'initialisation de la classe Form1 configure correctement le jeu")]
         public void Form1_Initialization_Should_SetupGameProperly()
         {
             var form = new Form1();
@@ -22,7 +22,7 @@ namespace CheckerGameTestUnitaire
         }
 
         [TestMethod]
-        [Description("Test ")]
+        [Description("Test que la méthode CreateGameUI crée correctement tous les boutons du plateau")]
         public void CreateGameUI_Should_CreateAllButtons()
         {
             var form = new Form1();
@@ -43,7 +43,7 @@ namespace CheckerGameTestUnitaire
         }
 
         [TestMethod]
-        [Description("Test ")]
+        [Description("Test que la méthode UpdateGameUI met correctement à jour les images des boutons en fonction des pièces sur le plateau")]
         public void UpdateGameUI_Should_SetButtonImagesCorrectly()
         {
             var form = new Form1();
@@ -60,10 +60,9 @@ namespace CheckerGameTestUnitaire
         }
 
         [TestMethod]
-        [Description("Test ")]
+        [Description("Test que la méthode OnCellClick active les mouvements valides pour une pièce sélectionnée ")]
         public void OnCellClick_Should_ActivateValidMoves_ForSelectedPiece()
         {
-
             var form = new Form1();
             var board = form.GetGameController().Board;
 
@@ -76,7 +75,7 @@ namespace CheckerGameTestUnitaire
         }
 
         [TestMethod]
-        [Description("Test ")]
+        [Description("Test que la méthode OnCellClick gère correctement un clic invalide (par exemple, sur une case sans pièce)")]
         public void OnCellClick_Should_HandleInvalidClick_Gracefully()
         {
             var form = new Form1();
@@ -93,9 +92,8 @@ namespace CheckerGameTestUnitaire
         }
 
 
-
         [TestMethod]
-        [Description("Test ")]
+        [Description("Test que la méthode IsMoving gère correctement un mouvement valide")]
         public void IsMoving_Should_SwitchPlayers_AfterValidMove()
         {
 
@@ -122,7 +120,7 @@ namespace CheckerGameTestUnitaire
         }
 
         [TestMethod]
-        [Description("Test ")]
+        [Description("Test que la méthode PlayerPossibleMove met correctement en évidence les mouvements possibles pour une pièce sélectionnée")]
         public void PlayerPossibleMove_Should_HighlightPossibleMoves()
         {
             var form = new Form1();
@@ -142,7 +140,7 @@ namespace CheckerGameTestUnitaire
         }
 
         [TestMethod]
-        [Description("Test ")]
+        [Description("Test que la méthode OnResetGameClick réinitialise correctement le plateau et le jeu ")]
         public void OnResetGameClick_Should_ResetBoard()
         {
             var form = new Form1();
@@ -155,7 +153,7 @@ namespace CheckerGameTestUnitaire
 
             form.OnResetGameClick(null, null);
 
-            Assert.AreEqual(1, gameController.currentPlayer); // le joueuir qui doit jouer revient a 1
+            Assert.AreEqual(1, gameController.currentPlayer); // le joueur qui doit jouer revient a 1
             Assert.AreEqual(1, board.GameMap[0, 1]); // initialisation de base 
             Assert.AreEqual(2, board.GameMap[5, 0]);
         }

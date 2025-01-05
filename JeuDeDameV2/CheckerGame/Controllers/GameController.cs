@@ -5,17 +5,17 @@ namespace CheckerGame.Controllers;
 public class GameController
 {
     public Board Board { get; set; }
-    
+
     public Button PreviousButton { get; set; }
-    
+
     public Button pressedButton { get; set; }
-    
-    public int countEatSteps {get; set;} 
-    
-    public int currentPlayer {get; set;}
-    
+
+    public int countEatSteps { get; set; }
+
+    public int currentPlayer { get; set; }
+
     public bool isContinue { get; set; }
-    
+
     public bool isMoving { get; set; }
 
     public List<Button> simpleSteps = new List<Button>();
@@ -27,6 +27,7 @@ public class GameController
         Board = board;
         PreviousButton = null;
     }
+
 
     /// <summary>
     /// Permet de sélectionner la couleur de la case
@@ -41,7 +42,7 @@ public class GameController
         }
         return Color.White;
     }
-    
+
     /// <summary>
     /// Applique la couleur appropriée à chaque case
     /// </summary>
@@ -55,21 +56,21 @@ public class GameController
                 {
                     Board.GameButtons[i, j].BackColor = GetPrevButtonColor(Board.GameButtons[i, j]);
                 }
-                
+
             }
         }
     }
-    
+
     /// <summary>
     /// Affiche les mouvements autorisées ou obligatoire
     /// </summary>
     /// <param name="iCurrFigure">Position I du pion sur le plateau</param>
     /// <param name="jCurrFigure">Position J du pion sur le plateau</param>
     /// <param name="isOnestep">si le pion ne peut se deplacer que d'un mouvement (s'il est une dame ou pas)</param>
-    public void ShowSteps(int iCurrFigure, int jCurrFigure,bool isOnestep = true)
+    public void ShowSteps(int iCurrFigure, int jCurrFigure, bool isOnestep = true)
     {
         simpleSteps.Clear();
-        ShowDiagonal(iCurrFigure, jCurrFigure,isOnestep);
+        ShowDiagonal(iCurrFigure, jCurrFigure, isOnestep);
         if (countEatSteps > 0)
         {
             CloseSimpleSteps(simpleSteps);
@@ -91,7 +92,7 @@ public class GameController
             {
                 break;
             }
-            
+
             if (Board.IsInsideBorders(i, j))
             {
                 if (!DeterminePath(i, j))
@@ -120,7 +121,7 @@ public class GameController
             {
                 break;
             }
-            
+
             if (Board.IsInsideBorders(i, j))
             {
                 if (!DeterminePath(i, j))
@@ -150,7 +151,7 @@ public class GameController
             {
                 break;
             }
-            
+
             if (Board.IsInsideBorders(i, j))
             {
                 if (!DeterminePath(i, j))
@@ -180,7 +181,7 @@ public class GameController
             {
                 break;
             }
-            
+
             if (Board.IsInsideBorders(i, j))
             {
                 if (!DeterminePath(i, j))
@@ -209,21 +210,15 @@ public class GameController
     /// </summary>
     /// <param name="ti">Position i de la case</param>
     /// <param name="tj">Position j de la case</param>
-    public bool DeterminePath(int ti,int tj)
+    public bool DeterminePath(int ti, int tj)
     {
-        if (Board == null || Board.GameMap == null)
-            throw new InvalidOperationException("Le plateau ou la carte de jeu n'est pas initialisé.");
-
-        if (Board.GameMap[ti, tj] != 1) // Vérifie si une pièce est présente
-            throw new InvalidOperationException("Aucune pièce à cette position.");
-
-
         if (Board.GameMap[ti, tj] == 0 && !isContinue)
         {
             Board.GameButtons[ti, tj].BackColor = Color.Yellow;
             Board.GameButtons[ti, tj].Enabled = true;
             simpleSteps.Add(Board.GameButtons[ti, tj]);
-        }else
+        }
+        else
         {
             if (Board.GameMap[ti, tj] != currentPlayer)
             {
@@ -247,7 +242,7 @@ public class GameController
     /// <param name="i">Position i de la case</param>
     /// <param name="j">Position j de la case</param>
     /// <param name="isOneStep">Si le pion ne peut se déplacer que d'un mouvement (s'il est une dame ou pas)</param>
-    public void ShowProceduralEat(int i,int j,bool isOneStep = true)
+    public void ShowProceduralEat(int i, int j, bool isOneStep = true)
     {
         int dirX = i - pressedButton.Location.Y / Board.CellSize;
         int dirY = j - pressedButton.Location.X / Board.CellSize;
@@ -255,12 +250,12 @@ public class GameController
         dirY = dirY < 0 ? -1 : 1;
         int il = i;
         int jl = j;
-        bool isEmpty = true; 
-        
+        bool isEmpty = true;
+
         while (Board.IsInsideBorders(il, jl))
         {
             if (Board.GameMap[il, jl] != 0 && Board.GameMap[il, jl] != currentPlayer)
-            { 
+            {
                 isEmpty = false;
                 break;
             }
@@ -270,20 +265,20 @@ public class GameController
             if (isOneStep)
                 break;
         }
-        
+
         if (isEmpty)
         {
             return;
         }
-        
+
         List<Button> toClose = new List<Button>();
         bool closeSimple = false;
         int ik = il + dirX;
         int jk = jl + dirY;
-        
-        while (Board.IsInsideBorders(ik,jk))
+
+        while (Board.IsInsideBorders(ik, jk))
         {
-            if (Board.GameMap[ik, jk] == 0 )
+            if (Board.GameMap[ik, jk] == 0)
             {
                 if (IsButtonHasEatStep(ik, jk, isOneStep, new int[2] { dirX, dirY }))
                 {
@@ -301,12 +296,12 @@ public class GameController
             {
                 break;
             }
-            
+
             if (isOneStep)
             {
                 break;
             }
-            
+
             jk += dirY;
             ik += dirX;
         }
@@ -334,12 +329,12 @@ public class GameController
             {
                 break;
             }
-            
+
             if (dir[0] == 1 && dir[1] == -1 && !isOneStep)
             {
                 break;
             }
-            
+
             if (Board.IsInsideBorders(i, j))
             {
                 if (Board.GameMap[i, j] != 0 && Board.GameMap[i, j] != currentPlayer)
@@ -455,7 +450,7 @@ public class GameController
         bool player1 = false;
         bool player2 = false;
 
-        for(int i = 0; i < Board.MapSize; i++)
+        for (int i = 0; i < Board.MapSize; i++)
         {
             for (int j = 0; j < Board.MapSize; j++)
             {
@@ -488,7 +483,7 @@ public class GameController
             }
         }
     }
-    
+
     /// <summary>
     /// Affiche les chemins possibles
     /// </summary>
@@ -497,9 +492,9 @@ public class GameController
         bool isOneStep = true;
         bool isEatStep = false;
         DeactivateAllButtons();
-        for(int i = 0; i < Board.MapSize; i++)
+        for (int i = 0; i < Board.MapSize; i++)
         {
-            for (int j= 0; j < Board.MapSize; j++)
+            for (int j = 0; j < Board.MapSize; j++)
             {
                 if (Board.GameMap[i, j] == currentPlayer)
                 {
@@ -533,7 +528,7 @@ public class GameController
         int currCount = 0;
         int i = startButton.Location.Y / Board.CellSize + startIndexX;
         int j = startButton.Location.X / Board.CellSize + startIndexY;
-        while (currCount < count-1)
+        while (currCount < count - 1)
         {
             Board.GameMap[i, j] = 0;
             Board.GameButtons[i, j].Image = null;
@@ -544,15 +539,15 @@ public class GameController
         }
 
     }
-    
+
     /// <summary>
     /// Passe le pion en dame s'il atteint le bord adverse
     /// </summary>
     /// <param name="button">Boutons que l'on vérifie</param>
     public void SwitchButtonToCheat(Button button)
     {
-        if ((Board.GameMap[button.Location.Y / Board.CellSize, button.Location.X / Board.CellSize] == 1 && button.Location.Y / Board.CellSize == Board.MapSize - 1) 
-            || (Board.GameMap[button.Location.Y / Board.CellSize, button.Location.X / Board.CellSize] == 2 && button.Location.Y / Board.CellSize == 0)) 
+        if ((Board.GameMap[button.Location.Y / Board.CellSize, button.Location.X / Board.CellSize] == 1 && button.Location.Y / Board.CellSize == Board.MapSize - 1)
+            || (Board.GameMap[button.Location.Y / Board.CellSize, button.Location.X / Board.CellSize] == 2 && button.Location.Y / Board.CellSize == 0))
         {
             button.Text = "D";
         }
@@ -581,14 +576,20 @@ public class GameController
         {
             for (int j = 0; j < Board.MapSize; j++)
             {
-                if (ButtonShouldBeActive(Board.GameButtons[i, j]))
+
+                //if (ButtonShouldBeActive(Board.GameButtons[i, j]))
+                //{
+                //    Board.GameButtons[i, j].Enabled = true;
+                //}
+
+                if (Board.GameButtons[i, j] != null && ButtonShouldBeActive(Board.GameButtons[i, j]))
                 {
                     Board.GameButtons[i, j].Enabled = true;
                 }
             }
         }
     }
-    
+
     /// <summary>
     /// Désactive tous les boutons du plateau
     /// </summary>
@@ -598,7 +599,11 @@ public class GameController
         {
             for (int j = 0; j < Board.MapSize; j++)
             {
-                Board.GameButtons[i, j].Enabled = false;
+                if (Board.GameButtons[i, j] != null) // Vérifiez que le bouton est initialisé
+                {
+                    Board.GameButtons[i, j].Enabled = false;
+                }
+
             }
         }
     }
