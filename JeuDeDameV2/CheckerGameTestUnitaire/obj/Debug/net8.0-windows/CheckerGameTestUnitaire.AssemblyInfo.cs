@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CheckerGameTestUnitaire")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5ecc05cc3e8bf38b1823204d423832c09efdc6f8")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+cf8f13313e9cad8fa7848b7f6d5eb1db64541dc5")]
 [assembly: System.Reflection.AssemblyProductAttribute("CheckerGameTestUnitaire")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CheckerGameTestUnitaire")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

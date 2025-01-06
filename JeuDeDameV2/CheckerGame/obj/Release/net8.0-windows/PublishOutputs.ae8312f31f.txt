@@ -1,0 +1,7 @@
+C:\Users\leapa\Bureau\BUT_Info\BUT_3\Semestre_5\R5.8_Qualité_dev\Projet\Projects2024-Qualite_dev-Jeu_Dame\JeuDeDameV2\CheckerGame\bin\Release\net8.0-windows\publish\Sprites\b.png
+C:\Users\leapa\Bureau\BUT_Info\BUT_3\Semestre_5\R5.8_Qualité_dev\Projet\Projects2024-Qualite_dev-Jeu_Dame\JeuDeDameV2\CheckerGame\bin\Release\net8.0-windows\publish\Sprites\w.png
+C:\Users\leapa\Bureau\BUT_Info\BUT_3\Semestre_5\R5.8_Qualité_dev\Projet\Projects2024-Qualite_dev-Jeu_Dame\JeuDeDameV2\CheckerGame\bin\Release\net8.0-windows\publish\CheckerGame.exe
+C:\Users\leapa\Bureau\BUT_Info\BUT_3\Semestre_5\R5.8_Qualité_dev\Projet\Projects2024-Qualite_dev-Jeu_Dame\JeuDeDameV2\CheckerGame\bin\Release\net8.0-windows\publish\CheckerGame.dll
+C:\Users\leapa\Bureau\BUT_Info\BUT_3\Semestre_5\R5.8_Qualité_dev\Projet\Projects2024-Qualite_dev-Jeu_Dame\JeuDeDameV2\CheckerGame\bin\Release\net8.0-windows\publish\CheckerGame.deps.json
+C:\Users\leapa\Bureau\BUT_Info\BUT_3\Semestre_5\R5.8_Qualité_dev\Projet\Projects2024-Qualite_dev-Jeu_Dame\JeuDeDameV2\CheckerGame\bin\Release\net8.0-windows\publish\CheckerGame.runtimeconfig.json
+C:\Users\leapa\Bureau\BUT_Info\BUT_3\Semestre_5\R5.8_Qualité_dev\Projet\Projects2024-Qualite_dev-Jeu_Dame\JeuDeDameV2\CheckerGame\bin\Release\net8.0-windows\publish\CheckerGame.pdb
