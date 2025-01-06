@@ -40,7 +40,7 @@ namespace CheckerGameTestUnitaire
 
 
         [TestMethod]
-        [Description("Test si la méthode CloseSteps réinitialise correctement les couleurs des cases jaunes")]
+        [Description("Test si la méthode CloseSteps réinitialise correctement les couleurs des cases")]
         public void CloseSteps_Should_ResetButtonColors()
         {
             _board.GameButtons[0, 0] = new Button { Location = new Point(0, 0), BackColor = Color.Blue };
@@ -54,7 +54,7 @@ namespace CheckerGameTestUnitaire
 
 
         [TestMethod]
-        [Description("Test ")]
+        [Description("Test que les déplacements possibles d'une pièce sont correctement affichés en mettant les cases valides en jaune")]
         public void ShowSteps_ShouldDisplayValidMoves()
         {
             var form = new Form1();
@@ -73,7 +73,7 @@ namespace CheckerGameTestUnitaire
 
 
         [TestMethod]
-        [Description("Test ")]
+        [Description("Test que la méthode active correctement les boutons situés sur les déplacements diagonaux autorisés à partir de la position actuelle")]
         public void ShowDiagonal_ShouldHighlightDiagonalMoves()
         {
             var form = new Form1();
@@ -91,7 +91,7 @@ namespace CheckerGameTestUnitaire
 
 
         [TestMethod]
-        [Description("Test ")]
+        [Description("Teste si la méthode met en évidence un chemin valide en colorant la case de destination en jaune")]
         public void DeterminePath_ShouldHighlightValidMoves()
         {
             var form = new Form1(); //
@@ -107,7 +107,7 @@ namespace CheckerGameTestUnitaire
 
 
         [TestMethod]
-        [Description("Test ")]
+        [Description("Test que la méthode retourne false si le chemin vers une case est bloqué par une autre pièce")]
         public void DeterminePath_ShouldReturnFalse_IfPathBlocked()
         {
             var form = new Form1();
@@ -122,9 +122,8 @@ namespace CheckerGameTestUnitaire
         }
 
 
-
         [TestMethod]
-        [Description("Test ")]
+        [Description("Test si la méthode met en évidence un chemin valide pour capturer une pièce adverse en colorant la case de destination en jaune")]
         public void ShowProceduralEat_ShouldHighlightCapturePath()
         {
             var form = new Form1();
@@ -150,7 +149,7 @@ namespace CheckerGameTestUnitaire
 
 
         [TestMethod]
-        [Description("Test que le changement de joueur s'effectue bien entre chaque tour et que l'affichage se met également à jour")]
+        [Description("Test que la méthode change le joueur actuel après chaque tour et met à jour correctement l'affichage associé")]
         public void SwitchPlayer_ShouldUpdateCurrentPlayer()
         {
             var lbl = new Label();
@@ -162,8 +161,9 @@ namespace CheckerGameTestUnitaire
             Assert.AreEqual("Au noir de jouer", lbl.Text);
         }
 
+
         [TestMethod]
-        [Description("Test que la victoire est bien prise en compte (le joueur 1 gagne lorsque le joueur 2 n'a plus de pièces)")]
+        [Description("Test que la victoire est bien déclaré (le joueur 1 gagne lorsque le joueur 2 n'a plus de pièces)")]
         public void ResetGame_ShouldDeclareWinner_IfNoPiecesLeft2()
         {
             _board.GameMap = new int[8, 8]; // Initialise un plateau vide.
@@ -176,9 +176,37 @@ namespace CheckerGameTestUnitaire
             Assert.AreEqual(Color.Transparent, lblVictory.BackColor);
         }
 
+
+        [TestMethod]
+        [Description("Test que les bouton peut importe leur couleur et leur etat retourne a la bonne couleur et desactivé")]
+        public void CloseSimpleSteps_ShouldReturnCorrectColor()
+        {
+            var form = new Form1();
+            _board = new Board();
+            form.CreateGameUI(_board);
+
+            _board.GameButtons[4, 2].BackColor = Color.Red;
+            _board.GameButtons[4, 2].Enabled = true;
+
+            _board.GameButtons[3, 4].BackColor = Color.Blue;
+            _board.GameButtons[3, 4].Enabled = true;
+
+            var button1 = _board.GameButtons[4, 2];
+            var button2 = _board.GameButtons[3, 4];
+            var simpleSteps = new List<Button> { button1, button2 };
+
+            _controller.CloseSimpleSteps(simpleSteps);
+
+            Assert.IsFalse(button1.Enabled, "Button1 doit être désactivé");
+            Assert.IsFalse(button2.Enabled, "Button2 doit être désactivé");
+            Assert.AreEqual(Color.White, button1.BackColor, "La couleur du Button1 doit être changé en blanc");
+            Assert.AreEqual(Color.Gray, button2.BackColor, "La couleur du Button2 color doit être changé en blanc");
+        }
+
+
+
         /////////////////////////////////////////////////////////
 
-        // A ajouter ---->  CloseSimpleSteps
 
 
 
@@ -189,7 +217,7 @@ namespace CheckerGameTestUnitaire
         /////////////////////////////////////////////////////////
 
         [TestMethod]
-        [Description("Test ")]
+        [Description("Test que les pièces mangées sont bien retirées du plateau de jeu et que les boutons associés sont réinitialisés (image et texte)")]
         public void DeleteEaten_ShouldRemoveEatenPiece2()
         {
             var form = new Form1();
@@ -209,9 +237,8 @@ namespace CheckerGameTestUnitaire
         }
 
 
-
         [TestMethod]
-        [Description("Test ")]
+        [Description("Test que la méthode change correctement l'état d'un bouton pour activer le mode 'cheat', modifiant son texte et activant le bouton")]
         public void SwitchButtonToCheat_ShouldChangeStateToCheat()
         {
             _controller.Board.GameMap = new int[8, 8];
@@ -235,7 +262,7 @@ namespace CheckerGameTestUnitaire
 
 
         [TestMethod]
-        [Description("Test ")]
+        [Description("Test que les boutons situés sur des positions valides (cases grises) sont correctement activés")]
         public void ButtonShouldBeActive_ShouldReturnTrueForValidPositions()
         {
             var validPositions = new[]
@@ -252,12 +279,13 @@ namespace CheckerGameTestUnitaire
 
                 var result = _controller.ButtonShouldBeActive(button);
 
-                Assert.IsTrue(result, $"Le bouton a la position {position} doir être active mais ne l'est pas");
+                Assert.IsTrue(result, $"Le bouton a la position {position} doit être activé mais ne l'est pas");
             }
         }
 
+
         [TestMethod]
-        [Description("Test ")]
+        [Description("Test que les boutons situés sur des positions invalides (cases blanches) ne sont pas activés")]
         public void ButtonShouldBeActive_ShouldReturnFalseForInvalidPositions()
         {
             var invalidPositions = new[]
@@ -280,7 +308,7 @@ namespace CheckerGameTestUnitaire
 
 
         [TestMethod]
-        [Description("Test ")]
+        [Description("Test que tous les boutons valides (cases grises) sont activés après l'appel de la méthode, tandis que les autres restent désactivés")]
         public void ActivateAllNecessaryButtons_ShouldEnableValidButtons()
         {
 
@@ -306,19 +334,11 @@ namespace CheckerGameTestUnitaire
                     Assert.AreEqual(shouldBeEnabled, _board.GameButtons[i, j].Enabled, $"Le bouton ({i},{j}) n'as pas le bon état");
                 }
             }
-
-            // AUTRE TEST MOINS COMPLET 
-            //_board.GameButtons[0, 0] = new Button { Location = new Point(0, 0) };
-            //_board.GameButtons[1, 1] = new Button { Location = new Point(50, 50) };
-
-            //_controller.ActivateAllNecessaryButtons();
-
-            //Assert.IsTrue(_board.GameButtons[0, 0].Enabled);
-            //Assert.IsTrue(_board.GameButtons[1, 1].Enabled);
         }
 
+
         [TestMethod]
-        [Description("Test ")]
+        [Description("Test que tous les boutons sont désactivés après l'appel de la méthode")]
         public void DeactivateAllButtons_ShouldDisableAllButtons()
         {            
             for (int i = 0; i < _board.GameMap.GetLength(0); i++)
@@ -338,15 +358,6 @@ namespace CheckerGameTestUnitaire
                     Assert.IsFalse(_board.GameButtons[i, j].Enabled, $"Le boutton ({i},{j}) n'est pas desactive");
                 }
             }
-
-
-            // AUTRE TEST MOINS COMPLET 
-            //_board.GameButtons[0, 0] = new Button { Enabled = true };
-
-            //_controller.DeactivateAllButtons();
-
-            //Assert.IsFalse(_board.GameButtons[0, 0].Enabled);
-
         }
     }
 }
