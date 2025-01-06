@@ -140,12 +140,87 @@ namespace CheckerGameTestUnitaire
             Assert.AreEqual(Color.Yellow, _board.GameButtons[5, 4].BackColor);
         }
 
-        ///////////////////////////////////////////////////
 
-        //A ajouter ----> IsButtonHasEatStep
+        [TestMethod]
+        [Description("Test si un déplacement entraine correctement la capture d'un pion adverse")]
+        public void IsButtonHasEatStep_ShouldReturnTrueWhenCapturePossible()
+        {
+            _board.GameMap = new int[8, 8]; // Initialise un plateau vide
 
+            // Place un pion du joueur actuel (joueur 1) à une position initiale
+            _board.GameMap[3, 4] = 1;
 
-        ///////////////////////////////////////////////////
+            // Place un pion adverse (joueur 2) en position à capturer
+            _board.GameMap[4, 5] = 2;
+
+            // Déclare les directions de déplacement (diagonale bas-droite)
+            int[] direction = { 1, 1 };
+
+            bool result = _controller.IsButtonHasEatStep(3, 4, isOneStep: false, dir: direction);
+
+            Assert.IsTrue(result, "Le déplacement devrait permettre la capture du pion adverse, mais la méthode retourne false");
+        }
+
+        [TestMethod]
+        [Description("Test si un déplacement ne permet pas la capture en raison de conditions invalides")]
+        public void IsButtonHasEatStep_ShouldReturnFalseWhenNoCapturePossible()
+        {
+            _board.GameMap = new int[8, 8]; // Initialise un plateau vide
+
+            // Place un pion du joueur actuel (joueur 1) à une position initiale
+            _board.GameMap[3, 4] = 1;
+
+            // Place un pion adverse (joueur 2) mais sans espace libre pour capturer
+            _board.GameMap[4, 5] = 2;
+            _board.GameMap[5, 6] = 1; // Position bloquée par un autre pion
+
+            // Déclare les directions de déplacement (diagonale bas-droite)
+            int[] direction = { 1, 1 };
+
+            bool result = _controller.IsButtonHasEatStep(3, 4, isOneStep: false, dir: direction);
+
+            Assert.IsFalse(result, "Le déplacement ne devrait pas permettre la capture, mais la méthode retourne true");
+        }
+
+        [TestMethod]
+        [Description("Test si un déplacement limité à une étape (pas dame mais pion classique) empêche une capture lointaine")]
+        public void IsButtonHasEatStep_ShouldRespectOneStepRestriction()
+        {
+            _board.GameMap = new int[8, 8]; // Initialise un plateau vide
+
+            // Place un pion du joueur actuel (joueur 1) à une position initiale
+            _board.GameMap[3, 4] = 1;
+
+            // Place un pion adverse (joueur 2) plus loin sur la diagonale
+            _board.GameMap[5, 6] = 2;
+
+            // Déclare les directions de déplacement (diagonale bas-droite)
+            int[] direction = { 1, 1 };
+
+            bool result = _controller.IsButtonHasEatStep(3, 4, isOneStep: true, dir: direction);
+
+            Assert.IsFalse(result, "Un déplacement limité à une seule étape ne devrait pas permettre de capturer un pion éloigné");
+        }
+
+        [TestMethod]
+        [Description("Test si un déplacement avec plusieurs étapes permet une capture lointaine (avec la dame)")]
+        public void IsButtonHasEatStep_ShouldRespectManyStepRestriction()
+        {
+            _board.GameMap = new int[8, 8]; // Initialise un plateau vide
+
+            // Place un pion du joueur actuel (joueur 1) à une position initiale
+            _board.GameMap[3, 4] = 1;
+
+            // Place un pion adverse (joueur 2) plus loin sur la diagonale
+            _board.GameMap[5, 6] = 2;
+
+            // Déclare les directions de déplacement (diagonale bas-droite)
+            int[] direction = { 1, 1 };
+
+            bool result = _controller.IsButtonHasEatStep(3, 4, isOneStep: false, dir: direction);
+
+            Assert.IsTrue(result, "Un déplacement possible à plusieurs étapes devrait permettre de capturer un pion éloigné");
+        }
 
 
         [TestMethod]
@@ -204,17 +279,27 @@ namespace CheckerGameTestUnitaire
         }
 
 
+        [TestMethod]
+        [Description("Teste si la méthode ShowPossibleSteps active uniquement les boutons corrects sur le plateau en fonction des étapes possibles pour le joueur actuel.")]
+        public void ShowPossibleSteps_ShouldEnableCorrectButtons()
+        {
+            var form = new Form1();
+            _board.GameMap = new int[8, 8];
+            form.CreateGameUI(_board);
+            _controller.CurrentPlayer = 1;
 
-        /////////////////////////////////////////////////////////
+            // Configure le plateau
+            _board.GameMap[1, 2] = 1; // Joueur actuel
+            _board.GameMap[2, 3] = 2; // Autre joueur
+            _board.GameButtons[1, 2].Text = "D";
+            _board.GameButtons[2, 3].Text = "";
 
+            _controller.ShowPossibleSteps();
 
+            Assert.IsTrue(_board.GameButtons[1, 2].Enabled, "Button at (1, 2) should be enabled.");
+            Assert.IsFalse(_board.GameButtons[2, 3].Enabled, "Button at (2, 3) should remain disabled.");
+        }
 
-
-
-        // A ajouter ----> ShowPossibleSteps
-
-
-        /////////////////////////////////////////////////////////
 
         [TestMethod]
         [Description("Test que les pièces mangées sont bien retirées du plateau de jeu et que les boutons associés sont réinitialisés (image et texte)")]
